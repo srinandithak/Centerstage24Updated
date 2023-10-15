@@ -62,13 +62,13 @@ public class TeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
             //clawMotor
-            if (gamepad2.right_bumper || gamepad1.right_bumper) {
-                rightClaw.setPosition(pickPosition);
-                leftClaw.setPosition(0);
-            } else if (gamepad2.left_bumper || gamepad1.left_bumper) {
-                rightClaw.setPosition(dropPosition);
-                leftClaw.setPosition(.3);
-            }
+//            if (gamepad2.right_bumper || gamepad1.right_bumper) {
+//                rightClaw.setPosition(pickPosition);
+//                leftClaw.setPosition(0);
+//            } else if (gamepad2.left_bumper || gamepad1.left_bumper) {
+//                rightClaw.setPosition(dropPosition);
+//                leftClaw.setPosition(.3);
+//            }
 
             //Lift
             if (gamepad2.left_trigger != 0 || gamepad1.left_trigger != 0 && liftMotor.getCurrentPosition() >= 0) {
