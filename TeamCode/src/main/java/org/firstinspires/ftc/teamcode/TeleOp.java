@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -19,7 +20,8 @@ public class TeleOp extends LinearOpMode {
     //Hardware
     public DcMotorEx liftMotor;
     public DcMotorEx intakeMotor;
-    public Servo outtake;
+    public CRServo outtake;
+
 
     //otherVariables
 
@@ -47,7 +49,7 @@ public class TeleOp extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        outtake = hardwareMap.get(Servo.class, "outtake");
+        outtake = hardwareMap.crservo.get("outtake");
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -94,6 +96,11 @@ public class TeleOp extends LinearOpMode {
                 intakeMotor.setPower(-0.9);
             } else {
                 intakeMotor.setPower(0.0);
+            }
+
+            //outtake
+            while (gamepad1.y || gamepad2.y) {
+                outtake.setPower(1);
             }
 
             //turtleMode
