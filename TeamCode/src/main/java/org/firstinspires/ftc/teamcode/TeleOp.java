@@ -136,17 +136,17 @@ public class TeleOp extends LinearOpMode {
 
             // Pass in the rotated input + right stick value for rotation
             // Rotation is not part of the rotated input thus must be passed in separately
-            if (fieldOriented) {
-                drive.setWeightedDrivePower(
-                        new Pose2d(
-                                input.getX() * robotSpeed,
-                                input.getY() * robotSpeed,
-                                -gamepad1.right_stick_x * robotSpeed * rotationSpeed
-                        )
-                );
-            }
+//            if (fieldOriented) {
+//                drive.setWeightedDrivePower(
+//                        new Pose2d(
+//                                input.getX() * robotSpeed,
+//                                input.getY() * robotSpeed,
+//                                -gamepad1.right_stick_x * robotSpeed * rotationSpeed
+//                        )
+//                );
+//            }
 
-            else {
+            //else {
                 drive.setWeightedDrivePower(
                         new Pose2d(
                                 -gamepad1.left_stick_y * robotSpeed,
@@ -154,7 +154,7 @@ public class TeleOp extends LinearOpMode {
                                 -gamepad1.right_stick_x * robotSpeed * rotationSpeed
                         )
                 );
-            }
+            //}
 
             // Update everything. Odometry. Etc.
             drive.update();
