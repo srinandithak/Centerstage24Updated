@@ -99,8 +99,10 @@ public class TeleOp extends LinearOpMode {
             }
 
             //outtake
-            while (gamepad1.y || gamepad2.y) {
+            if (gamepad1.y || gamepad2.y) {
                 outtake.setPower(1);
+            } else {
+                outtake.setPower(0);
             }
 
             //turtleMode
