@@ -53,6 +53,7 @@ public class TeleOp extends LinearOpMode {
         outtake = hardwareMap.crservo.get("outtake");
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
