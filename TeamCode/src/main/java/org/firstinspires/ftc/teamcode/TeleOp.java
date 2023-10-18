@@ -73,13 +73,9 @@ public class TeleOp extends LinearOpMode {
 //            }
 
             //droneLauncher
-            if (gamepad1.x || gamepad2.x) {
+            if (gamepad1.a || gamepad2.a) {
                 //test position
                 droneLauncher.setPosition(0.5);
-            } else{
-                //test position
-                droneLauncher.setPosition(0);
-
             }
 
             //Lift
