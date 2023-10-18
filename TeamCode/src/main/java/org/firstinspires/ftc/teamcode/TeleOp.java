@@ -21,6 +21,7 @@ public class TeleOp extends LinearOpMode {
     public DcMotorEx liftMotor;
     public DcMotorEx intakeMotor;
     public CRServo outtake;
+    public Servo droneLauncher;
 
 
     //otherVariables
@@ -70,6 +71,16 @@ public class TeleOp extends LinearOpMode {
 //                leftClaw.setPosition(.3);
 //            }
 
+            //droneLauncher
+            if (gamepad1.x || gamepad2.x) {
+                //test position
+                droneLauncher.setPosition(0.5);
+            } else{
+                //test position
+                droneLauncher.setPosition(0);
+
+            }
+
             //Lift
             if (gamepad2.left_trigger != 0 || gamepad1.left_trigger != 0 && liftMotor.getCurrentPosition() >= 0) {
                 liftMotor.setPower(-0.9);
@@ -115,10 +126,10 @@ public class TeleOp extends LinearOpMode {
             }
 
             //fieldOriented toggle
-            if (gamepad1.a && !fieldOriented) {
+            if (gamepad1.dpad_left && !fieldOriented) {
                 drive.setPoseEstimate(new Pose2d(0,0,0));
                 fieldOriented = true;
-            } else if (gamepad1.x && fieldOriented) {
+            } else if (gamepad1.dpad_right && fieldOriented) {
                 fieldOriented = false;
             }
 

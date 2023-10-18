@@ -37,9 +37,7 @@ public class Auton extends LinearOpMode {
         pipeline = new detectionPipeline();
         camera.setPipeline(pipeline);
 
-        camera.openCameraDevice();
 
-        camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -53,6 +51,7 @@ public class Auton extends LinearOpMode {
                  */
             }
         });
+        camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
         int position = pipeline.getAnalysis();
 
