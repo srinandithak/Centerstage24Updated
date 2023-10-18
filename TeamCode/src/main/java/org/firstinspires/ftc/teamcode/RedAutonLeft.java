@@ -8,7 +8,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "Auton", group = "Autonomous")
+@Autonomous(name = "RedAutonLeft", group = "Autonomous")
 public class RedAutonLeft extends LinearOpMode {
 
     detectionPipeline pipeline;

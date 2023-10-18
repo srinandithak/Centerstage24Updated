@@ -1,14 +1,27 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvInternalCamera;
+import org.openftc.easyopencv.OpenCvPipeline;
 
-@Autonomous(name = "Auton", group = "Autonomous")
+@Autonomous(name = "BlueAutonRight", group = "Autonomous")
 public class BlueAutonRight extends LinearOpMode {
 
     detectionPipeline pipeline;
@@ -28,7 +41,7 @@ public class BlueAutonRight extends LinearOpMode {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                camera.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
                 camera.setPipeline(pipeline);
             }
 
@@ -39,7 +52,6 @@ public class BlueAutonRight extends LinearOpMode {
                  */
             }
         });
-        camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
         int position = pipeline.getAnalysis();
 
