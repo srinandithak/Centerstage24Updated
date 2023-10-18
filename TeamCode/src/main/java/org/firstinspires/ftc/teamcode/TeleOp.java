@@ -30,8 +30,6 @@ public class TeleOp extends LinearOpMode {
     public static final double NORMAL_SPEED = 0.75;
     public static final double TURTLE_SPEED = 0.25;
     public double robotSpeed = NORMAL_SPEED;
-    public double pickPosition = .65;
-    public double dropPosition = .37;
     public double rotationSpeed = .75;
     public boolean fieldOriented = false;
 
@@ -158,7 +156,7 @@ public class TeleOp extends LinearOpMode {
                 drive.setWeightedDrivePower(
                         new Pose2d(
                                 -gamepad1.left_stick_y * robotSpeed,
-                                -gamepad1.left_stick_x * robotSpeed,
+                                gamepad1.left_stick_x * robotSpeed,
                                 -gamepad1.right_stick_x * robotSpeed * rotationSpeed
                         )
                 );
