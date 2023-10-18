@@ -35,13 +35,14 @@ public class Auton extends LinearOpMode {
         OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(OpenCvCamera, cameraMonitorViewId);
 
         pipeline = new detectionPipeline();
-        camera.setPipeline(pipeline);
+
 
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
                 camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                camera.setPipeline(pipeline);
             }
 
             @Override
