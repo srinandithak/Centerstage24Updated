@@ -17,16 +17,18 @@ public class TeleOp extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
-    //Hardware
+    //Hardware: Declaring all the robot parts
     public DcMotorEx liftMotor;
     public DcMotorEx intakeMotor;
     public CRServo outtake;
     public Servo droneLauncher;
 
 
-    //otherVariables
 
+    //Reduces speed when true
     public boolean turtleMode = false;
+
+    //Other variables
     public static final double NORMAL_SPEED = 0.75;
     public static final double TURTLE_SPEED = 0.25;
     public double robotSpeed = NORMAL_SPEED;
@@ -46,7 +48,7 @@ public class TeleOp extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // Most robots need the motor on one side to be reversed to drive forward
+        // Most robots need the motor on one side to be reversed to drive forward - was done in Sample Mecanum Drive
         // Reverse the motor that runs backwards when connected directly to the battery
         outtake = hardwareMap.crservo.get("outtake");
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
@@ -61,14 +63,6 @@ public class TeleOp extends LinearOpMode {
 
 
         while (opModeIsActive()) {
-            //clawMotor
-//            if (gamepad2.right_bumper || gamepad1.right_bumper) {
-//                rightClaw.setPosition(pickPosition);
-//                leftClaw.setPosition(0);
-//            } else if (gamepad2.left_bumper || gamepad1.left_bumper) {
-//                rightClaw.setPosition(dropPosition);
-//                leftClaw.setPosition(.3);
-//            }
 
             //droneLauncher
             if (gamepad1.a || gamepad2.a) {
@@ -156,7 +150,7 @@ public class TeleOp extends LinearOpMode {
                 drive.setWeightedDrivePower(
                         new Pose2d(
                                 -gamepad1.left_stick_y * robotSpeed,
-                                gamepad1.left_stick_x * robotSpeed,
+                                -gamepad1.left_stick_x * robotSpeed,
                                 -gamepad1.right_stick_x * robotSpeed * rotationSpeed
                         )
                 );

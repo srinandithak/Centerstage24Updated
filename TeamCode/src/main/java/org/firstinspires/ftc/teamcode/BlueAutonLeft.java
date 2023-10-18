@@ -108,16 +108,7 @@ public class BlueAutonLeft extends LinearOpMode {
             }
         });
 
-        int position = pipeline.getAnalysis();
 
-        new detectionPipeline();
-        telemetry.addData("object detection", position);
-
-        telemetry.update();
-
-
-        telemetry.addData(">", "Press Play to start op mode");
-        telemetry.update();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(0, 0, 0);
@@ -195,10 +186,21 @@ public class BlueAutonLeft extends LinearOpMode {
 //                .build();
 
 
-        waitForStart();
-        if (isStopRequested()) {
-            return;
+        int position = pipeline.getAnalysis();
+
+
+        while (!opModeIsActive()) {
+            position = pipeline.getAnalysis();
+            telemetry.addData("object detection", position);
+            telemetry.addData(">", "Press Play to start op mode");
+            telemetry.update();
+            if (isStopRequested()) {
+                return;
+            }
         }
+
+        waitForStart();
+
 
         if (opModeIsActive()) {
             drive.followTrajectory(forward);
