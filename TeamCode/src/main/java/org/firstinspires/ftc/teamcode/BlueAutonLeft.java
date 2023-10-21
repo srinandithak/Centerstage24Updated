@@ -48,13 +48,6 @@ public class BlueAutonLeft extends LinearOpMode {
     public DcMotorEx intakeMotor;
     public CRServo outtake;
     public Servo droneLauncher;
-    public static final int BOTTOM_LEVEL_POSITION = 1800;
-    public static final int MIDDLE_LEVEL_POSITION = 2950;
-    public static final int TOP_LEVEL_POSITION = 4000;
-    public static final int TOP_LEVEL = 3;
-    public static final int MIDDLE_LEVEL = 2;
-    public static final int BOTTOM_LEVEL = 1;
-    public int detectedLevel;
 
     public void changeLift (int height)  throws InterruptedException {
         Thread.sleep(100);
@@ -73,7 +66,7 @@ public class BlueAutonLeft extends LinearOpMode {
 
     public void outtake() throws InterruptedException {
         outtake.setPower(1);
-        Thread.sleep(1000);
+        Thread.sleep(700);
         outtake.setPower(0);
     }
 
@@ -116,74 +109,84 @@ public class BlueAutonLeft extends LinearOpMode {
 
 
 
-        //Position
+        //Position 1
         Trajectory forward = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(30, -5))
+                .lineToConstantHeading(new Vector2d(26, 3))
                 .build();
 
         Trajectory back = drive.trajectoryBuilder(forward.end())
-                .lineToConstantHeading(new Vector2d(25, -5))
+                .lineToConstantHeading(new Vector2d(21, 5))
                 .build();
 
         Trajectory turn = drive.trajectoryBuilder(back.end())
-                .lineToLinearHeading(new Pose2d(25, -4, Math.toRadians(85)))
+                .lineToLinearHeading(new Pose2d(22, 4, Math.toRadians(91)))
                 .build();
 
-        Trajectory forward2 =  drive.trajectoryBuilder(turn.end())
-           .lineToConstantHeading(new Vector2d(30, 65))
+        Trajectory forwardToBoard =  drive.trajectoryBuilder(turn.end())
+           .lineToConstantHeading(new Vector2d(32, 42))
            .build();
 
-        Trajectory park =  drive.trajectoryBuilder(forward2.end())
-                .lineToConstantHeading(new Vector2d(54, 55))
+        Trajectory park =  drive.trajectoryBuilder(forwardToBoard.end())
+                .lineToConstantHeading(new Vector2d(-5, 35))
                 .build();
 
         Trajectory park2 =  drive.trajectoryBuilder(park.end())
-                .lineToConstantHeading(new Vector2d(54, 65))
+                .lineToConstantHeading(new Vector2d(-5, 53))
                 .build();
 
 
+        //Position 0
+        Trajectory forward0 = drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(19,18 ))
+                .build();
 
-//        Trajectory dropBlock = drive.trajectoryBuilder(strafeRight.end())
-//                .lineToLinearHeading(new Pose2d(46.5, -16.6, Math.toRadians(90)), SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-//                .build();
-//
-//        Trajectory goBack1 = drive.trajectoryBuilder(dropBlock.end())
-//                .back(3.5, SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-//                .build();
-//
-//        Trajectory strafeRight2 = drive.trajectoryBuilder(goBack1.end())
-//                .strafeRight(14)
-//                .build();
-//
-//        Trajectory pickBlock = drive.trajectoryBuilder(strafeRight2.end())
-//                .lineToLinearHeading(new Pose2d(62, 32.15, Math.toRadians(90)), SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-//                .build();
-//
-//        Trajectory goBack = drive.trajectoryBuilder(pickBlock.end())
-//                .back(25, SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-//                .build();
-//
-//        Trajectory dropBlock2 = drive.trajectoryBuilder(goBack.end())
-//                .lineToLinearHeading(new Pose2d(58.1, 16, Math.toRadians(180)))
-//                .build();
-//
-//        Trajectory goBack2 = drive.trajectoryBuilder(dropBlock2.end())
-//                .back(9, SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-//                .build();
-//
-//        Trajectory pickBlock2 = drive.trajectoryBuilder(goBack2.end())
-//                .lineToLinearHeading(new Pose2d(62, 32.15, Math.toRadians(90)), SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-//                .build();
-//
-//        Trajectory reset = drive.trajectoryBuilder(dropBlock2.end())
-//                .lineToLinearHeading(new Pose2d(64, 27, Math.toRadians(184)))
-//                .build();
+        Trajectory backTurn = drive.trajectoryBuilder(forward0.end())
+                .lineToLinearHeading(new Pose2d(15, 4, Math.toRadians(87)))
+                .build();
+
+        Trajectory forward02 =  drive.trajectoryBuilder(turn.end())
+                .lineToConstantHeading(new Vector2d(32, 45))
+                .build();
+
+        Trajectory park0 =  drive.trajectoryBuilder(forward02.end())
+                .lineToConstantHeading(new Vector2d(0, 35))
+                .build();
+
+        Trajectory park02 =  drive.trajectoryBuilder(park0.end())
+                .lineToConstantHeading(new Vector2d(0, 57
+                ))
+                .build();
+
+        //position2
+
+        Trajectory forward3 = drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(25,10 ))
+                .build();
+
+        Trajectory forward3_2 = drive.trajectoryBuilder(forward3.end())
+                .lineToLinearHeading(new Pose2d(25,-4, Math.toRadians(-90) ))
+                .build();
+
+        Trajectory back3 = drive.trajectoryBuilder(forward3_2.end())
+                .lineToConstantHeading(new Vector2d(25,-0 ))
+                .build();
+
+        Trajectory backTurn3 = drive.trajectoryBuilder(back3.end())
+                .lineToLinearHeading(new Pose2d(25, -15, Math.toRadians(90)))
+                .build();
+
+        Trajectory forward03 =  drive.trajectoryBuilder(backTurn3.end())
+                .lineToConstantHeading(new Vector2d(50, 45))
+                .build();
+
+        Trajectory park03 =  drive.trajectoryBuilder(forward03.end())
+                .lineToConstantHeading(new Vector2d(-10, 35))
+                .build();
+
+        Trajectory park03_2 =  drive.trajectoryBuilder(park03.end())
+                .lineToConstantHeading(new Vector2d(-10, 53))
+                .build();
+
 
 
         int position = pipeline.getAnalysis();
@@ -203,16 +206,65 @@ public class BlueAutonLeft extends LinearOpMode {
 
 
         if (opModeIsActive()) {
-            drive.followTrajectory(forward);
-            changeLift(1000);
-            outtake();
-            drive.followTrajectory(back);
-            drive.followTrajectory(turn);
-            drive.followTrajectory(forward2);
-            changeLift(2000);
-            outtake();
-            drive.followTrajectory(park);
-            drive.followTrajectory(park2);
+            if (position == 1) {
+                drive.followTrajectory(forward);
+                changeLift(1000);
+                Thread.sleep(3000);
+                outtake();
+                drive.followTrajectory(back);
+                drive.followTrajectory(turn);
+                drive.followTrajectory(forwardToBoard);
+                changeLift(2500);
+                Thread.sleep(1500);
+                outtake();
+                changeLift(0);
+                drive.followTrajectory(park);
+                drive.followTrajectory(park2);
+
+
+            }
+
+            if (position == 0) {
+                drive.followTrajectory(forward0);
+                changeLift(1000);
+                Thread.sleep(3000);
+                outtake();
+                drive.followTrajectory(backTurn);
+                changeLift(0);
+
+                drive.followTrajectory(forward02);
+                changeLift(2000);
+                Thread.sleep(1500);
+                outtake();
+
+                changeLift(0);
+                drive.followTrajectory(park0);
+                drive.followTrajectory(park02);
+
+            }
+
+            if (position == 2) {
+                drive.followTrajectory(forward3);
+                drive.followTrajectory(forward3_2);
+                changeLift(1000);
+                Thread.sleep(1500);
+                outtake();
+                drive.followTrajectory(back3);
+                drive.followTrajectory(backTurn3);
+                changeLift(0);
+
+                drive.followTrajectory(forward03);
+                changeLift(2000);
+                Thread.sleep(3000);
+                outtake();
+
+                changeLift(0);
+                drive.followTrajectory(park03);
+                drive.followTrajectory(park03_2);
+            }
+
+
+
 
 
         }

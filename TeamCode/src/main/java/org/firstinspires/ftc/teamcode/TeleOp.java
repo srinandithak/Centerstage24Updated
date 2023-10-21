@@ -20,6 +20,8 @@ public class TeleOp extends LinearOpMode {
     //Hardware: Declaring all the robot parts
     public DcMotorEx liftMotor;
     public DcMotorEx intakeMotor;
+
+    public CRServo intakeServo;
     public CRServo outtake;
     public Servo droneLauncher;
 
@@ -53,6 +55,7 @@ public class TeleOp extends LinearOpMode {
         outtake = hardwareMap.crservo.get("outtake");
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        intakeServo = hardwareMap.crservo.get("intakeServo");
         droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -65,7 +68,7 @@ public class TeleOp extends LinearOpMode {
         while (opModeIsActive()) {
 
             //droneLauncher
-            if (gamepad1.a || gamepad2.a) {
+            if (gamepad1.x || gamepad2.x) {
                 //test position
                 droneLauncher.setPosition(0.5);
             }
@@ -92,10 +95,13 @@ public class TeleOp extends LinearOpMode {
             //intake
             if (gamepad2.right_bumper || gamepad1.right_bumper) {
                 intakeMotor.setPower(0.9);
+                intakeServo.setPower(-1);
             } else if (gamepad2.left_bumper || gamepad1.left_bumper) {
                 intakeMotor.setPower(-0.9);
+                intakeServo.setPower(1);
             } else {
                 intakeMotor.setPower(0.0);
+                intakeServo.setPower(0);
             }
 
             //outtake
