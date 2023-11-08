@@ -25,6 +25,11 @@ public class TeleOp extends LinearOpMode {
     public CRServo outtake;
     public Servo droneLauncher;
 
+    public Servo rightRampServo;
+    public Servo leftRampServo;
+
+    public double initialPositionRight;
+    public double initialPositionLeft;
 
 
     //Reduces speed when true
@@ -40,6 +45,8 @@ public class TeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+
         telemetry.addData("Status", "Robot is Initialized");
         telemetry.update();
 
@@ -52,13 +59,19 @@ public class TeleOp extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward - was done in Sample Mecanum Drive
         // Reverse the motor that runs backwards when connected directly to the battery
-        outtake = hardwareMap.crservo.get("outtake");
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
         intakeServo = hardwareMap.crservo.get("intakeServo");
+        outtake = hardwareMap.crservo.get("outtake");
         droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
+        rightRampServo = hardwareMap.get(Servo.class, "rightRampServo");
+        leftRampServo = hardwareMap.get(Servo.class, "leftRampServo");
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+        initialPositionLeft = leftRampServo.getPosition();
+        initialPositionRight = rightRampServo.getPosition();
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -67,10 +80,51 @@ public class TeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
+            rightRampServo.setDirection(rightRampServo.getDirection().REVERSE);
+            // ramp servo positions
+            telemetry.addData("Right Ramp Servo Position", rightRampServo.getPosition());
+            telemetry.addData("Left Ramp Servo Position", leftRampServo.getPosition());
+            telemetry.update();
+
+
             //droneLauncher
             if (gamepad1.x || gamepad2.x) {
                 //test position
                 droneLauncher.setPosition(0.5);
+            }
+
+            //rampServo
+            if (liftMotor.getCurrentPosition() >= 1500) {
+                //test position
+                rightRampServo.setPosition(0.8);
+           //     leftRampServo.setPosition(leftRampServo.getPosition() + 0.5);
+            }
+
+            if (liftMotor.getCurrentPosition() < 1500) {
+
+                rightRampServo.setPosition(0.15);
+          //      leftRampServo.setPosition(0);
+            }
+
+            //intake
+            if (gamepad1.right_bumper || gamepad2.right_bumper) {
+                intakeMotor.setPower(1);
+                intakeServo.setPower(-1);
+            } else if (gamepad1.left_bumper || gamepad2.left_bumper) {
+                intakeMotor.setPower(-1);
+                intakeServo.setPower(1);
+            } else {
+                intakeMotor.setPower(0);
+                intakeServo.setPower(0);
+            }
+
+            //outtake
+            if (gamepad1.y || gamepad2.y){
+                outtake.setPower(1);
+            } else if (gamepad1.a || gamepad2.a) {
+                outtake.setPower(-1);
+            } else {
+                outtake.setPower(0);
             }
 
             //Lift
@@ -92,24 +146,8 @@ public class TeleOp extends LinearOpMode {
                 liftMotor.setPower(-0.50);
             }
 
-            //intake
-            if (gamepad2.right_bumper || gamepad1.right_bumper) {
-                intakeMotor.setPower(0.9);
-                intakeServo.setPower(-1);
-            } else if (gamepad2.left_bumper || gamepad1.left_bumper) {
-                intakeMotor.setPower(-0.9);
-                intakeServo.setPower(1);
-            } else {
-                intakeMotor.setPower(0.0);
-                intakeServo.setPower(0);
-            }
 
-            //outtake
-            if (gamepad1.y || gamepad2.y) {
-                outtake.setPower(1);
-            } else {
-                outtake.setPower(0);
-            }
+
 
             //turtleMode
             if (gamepad1.dpad_up && !turtleMode) {

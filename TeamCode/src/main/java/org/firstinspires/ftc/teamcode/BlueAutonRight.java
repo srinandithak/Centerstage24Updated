@@ -47,6 +47,8 @@ public class BlueAutonRight extends LinearOpMode {
 
     public DcMotorEx liftMotor;
     public DcMotorEx intakeMotor;
+
+    public CRServo intakeServo;
     public CRServo outtake;
     public Servo droneLauncher;
 
@@ -67,9 +69,21 @@ public class BlueAutonRight extends LinearOpMode {
 
     public void outtake() throws InterruptedException {
         outtake.setPower(1);
-        Thread.sleep(1000);
+        intakeServo.setPower(1);
+        Thread.sleep(2250);
         outtake.setPower(0);
+        intakeServo.setPower(0);
     }
+
+    public void pixel() throws InterruptedException {
+        intakeMotor.setPower(-1);
+        intakeServo.setPower(-1);
+        Thread.sleep(1000);
+        intakeMotor.setPower(0);
+        intakeServo.setPower(0);
+    }
+
+
 
     public void runOpMode() throws InterruptedException {
         //Camera initialization
@@ -111,69 +125,35 @@ public class BlueAutonRight extends LinearOpMode {
 
 
         //Position 1
-        Trajectory forward = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(26, 3))
+        Trajectory forward1 = drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(48, 0))
                 .build();
 
-        Trajectory back = drive.trajectoryBuilder(forward.end())
-                .lineToConstantHeading(new Vector2d(25, 5))
-                .build();
-
-        Trajectory turn = drive.trajectoryBuilder(back.end())
-                .lineToLinearHeading(new Pose2d(25, 4, Math.toRadians(91)))
-                .build();
-
-        Trajectory forwardToBoard =  drive.trajectoryBuilder(turn.end())
-                .lineToConstantHeading(new Vector2d(25, 41))
-                .build();
-
-        Trajectory park =  drive.trajectoryBuilder(forwardToBoard.end())
-                .lineToConstantHeading(new Vector2d(5, 41))
-                .build();
-
-        Trajectory park2 =  drive.trajectoryBuilder(park.end())
-                .lineToConstantHeading(new Vector2d(5, 73))
-                .build();
 
 
         //Position 0
         Trajectory forward0 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(22,15 ))
+                .lineToConstantHeading(new Vector2d(24, 0))
                 .build();
 
-        Trajectory backTurn = drive.trajectoryBuilder(forward0.end())
-                .lineToLinearHeading(new Pose2d(25, 4, Math.toRadians(90)))
+        Trajectory drop0 = drive.trajectoryBuilder(forward0.end())
+                .lineToConstantHeading(new Vector2d(24, -5))
                 .build();
 
-        Trajectory forward02 =  drive.trajectoryBuilder(turn.end())
-                .lineToConstantHeading(new Vector2d(25, 45))
-                .build();
 
-        Trajectory park0 =  drive.trajectoryBuilder(forward02.end())
-                .lineToConstantHeading(new Vector2d(5, 43))
-                .build();
 
-        Trajectory park02 =  drive.trajectoryBuilder(park0.end())
-                .lineToConstantHeading(new Vector2d(5, 73))
-                .build();
+
 
         //position2
 
         Trajectory forward2 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(10,-5 ))
+                .lineToConstantHeading(new Vector2d(24,0 ))
                 .build();
 
-        Trajectory backTurn2 = drive.trajectoryBuilder(forward0.end())
-                .lineToLinearHeading(new Pose2d(0, -5, Math.toRadians(90)))
+        Trajectory drop2 = drive.trajectoryBuilder(forward2.end())
+                .lineToConstantHeading(new Vector2d(24,5 ))
                 .build();
 
-        Trajectory forward3 =  drive.trajectoryBuilder(backTurn2.end())
-                .lineToConstantHeading(new Vector2d(0, 41))
-                .build();
-
-        Trajectory right3 =  drive.trajectoryBuilder(backTurn2.end())
-                .lineToConstantHeading(new Vector2d(25, 41))
-                .build();
 
 
 
@@ -195,59 +175,22 @@ public class BlueAutonRight extends LinearOpMode {
 
         if (opModeIsActive()) {
             if (position == 1) {
-                drive.followTrajectory(forward);
-                changeLift(1400);
-                Thread.sleep(1500);
-                outtake();
-
-                drive.followTrajectory(back);
-                drive.followTrajectory(turn);
-                drive.followTrajectory(forwardToBoard);
-                changeLift(2000);
-                Thread.sleep(1500);
-                outtake();
-                changeLift(0);
-                drive.followTrajectory(park);
-                drive.followTrajectory(park2);
-
-
+                drive.followTrajectory(forward1);
+                pixel();
             }
 
             if (position == 0) {
                 drive.followTrajectory(forward0);
-                changeLift(1400);
-                Thread.sleep(3000);
-                outtake();
-                drive.followTrajectory(backTurn);
-                changeLift(0);
-
-                drive.followTrajectory(forward02);
-                changeLift(2000);
-                Thread.sleep(1500);
-                outtake();
-
-                changeLift(0);
-                drive.followTrajectory(park2);
-                drive.followTrajectory(park02);
-
+                drive.turn(Math.toRadians(90));
+                drive.followTrajectory(drop0);
+                pixel();
             }
 
             if (position == 2) {
                 drive.followTrajectory(forward2);
-                changeLift(1400);
-                Thread.sleep(3000);
-                outtake();
-                drive.followTrajectory(backTurn2);
-                changeLift(0);
-
-                drive.followTrajectory(forward3);
-                changeLift(2000);
-                Thread.sleep(1500);
-                outtake();
-
-                changeLift(0);
-                drive.followTrajectory(park0);
-                drive.followTrajectory(park02);
+                drive.turn(Math.toRadians(-90));
+                drive.followTrajectory(drop2);
+                pixel();
             }
 
 
