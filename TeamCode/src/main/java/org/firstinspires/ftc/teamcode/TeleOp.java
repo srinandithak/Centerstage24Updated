@@ -17,20 +17,21 @@ public class TeleOp extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
-    //Hardware
+    //Hardware: Declaring all the robot parts
     public DcMotorEx liftMotor;
     public DcMotorEx intakeMotor;
     public CRServo outtake;
+    public Servo droneLauncher;
 
 
-    //otherVariables
 
+    //Reduces speed when true
     public boolean turtleMode = false;
+
+    //Other variables
     public static final double NORMAL_SPEED = 0.75;
     public static final double TURTLE_SPEED = 0.25;
     public double robotSpeed = NORMAL_SPEED;
-    public double pickPosition = .65;
-    public double dropPosition = .37;
     public double rotationSpeed = .75;
     public boolean fieldOriented = false;
 
@@ -47,11 +48,12 @@ public class TeleOp extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // Most robots need the motor on one side to be reversed to drive forward
+        // Most robots need the motor on one side to be reversed to drive forward - was done in Sample Mecanum Drive
         // Reverse the motor that runs backwards when connected directly to the battery
         outtake = hardwareMap.crservo.get("outtake");
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
@@ -61,14 +63,12 @@ public class TeleOp extends LinearOpMode {
 
 
         while (opModeIsActive()) {
-            //clawMotor
-//            if (gamepad2.right_bumper || gamepad1.right_bumper) {
-//                rightClaw.setPosition(pickPosition);
-//                leftClaw.setPosition(0);
-//            } else if (gamepad2.left_bumper || gamepad1.left_bumper) {
-//                rightClaw.setPosition(dropPosition);
-//                leftClaw.setPosition(.3);
-//            }
+
+            //droneLauncher
+            if (gamepad1.a || gamepad2.a) {
+                //test position
+                droneLauncher.setPosition(0.5);
+            }
 
             //Lift
             if (gamepad2.left_trigger != 0 || gamepad1.left_trigger != 0 && liftMotor.getCurrentPosition() >= 0) {
@@ -115,10 +115,10 @@ public class TeleOp extends LinearOpMode {
             }
 
             //fieldOriented toggle
-            if (gamepad1.a && !fieldOriented) {
+            if (gamepad1.dpad_left && !fieldOriented) {
                 drive.setPoseEstimate(new Pose2d(0,0,0));
                 fieldOriented = true;
-            } else if (gamepad1.x && fieldOriented) {
+            } else if (gamepad1.dpad_right && fieldOriented) {
                 fieldOriented = false;
             }
 
