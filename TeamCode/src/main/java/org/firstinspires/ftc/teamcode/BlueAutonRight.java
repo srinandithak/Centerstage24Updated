@@ -41,12 +41,13 @@ import java.util.List;
 
 @Autonomous(name = "BlueAutonRight", group = "Autonomous")
 public class BlueAutonRight extends LinearOpMode {
-    //kadhir :)
 
     detectionPipeline pipeline;
 
     public DcMotorEx liftMotor;
     public DcMotorEx intakeMotor;
+
+    public Servo rightRampServo;
 
     public CRServo intakeServo;
     public CRServo outtake;
@@ -54,6 +55,7 @@ public class BlueAutonRight extends LinearOpMode {
 
     public void changeLift (int height)  throws InterruptedException {
         Thread.sleep(100);
+
 
         if (liftMotor.getCurrentPosition() < height) {
             liftMotor.setTargetPosition(height);
@@ -68,25 +70,42 @@ public class BlueAutonRight extends LinearOpMode {
     }
 
     public void outtake() throws InterruptedException {
-        outtake.setPower(1);
+        outtake.setPower(-1);
         intakeServo.setPower(1);
         Thread.sleep(2250);
         outtake.setPower(0);
         intakeServo.setPower(0);
     }
 
-    public void pixel() throws InterruptedException {
-        intakeMotor.setPower(-1);
+    public void outtakeGround() throws InterruptedException {
         intakeServo.setPower(-1);
-        Thread.sleep(1000);
+        Thread.sleep(2250);
+        intakeServo.setPower(0);
+    }
+
+    public void pixel() throws InterruptedException {
+        intakeMotor.setPower(1);
+        intakeServo.setPower(-1);
+        Thread.sleep(2000);
         intakeMotor.setPower(0);
         intakeServo.setPower(0);
     }
 
+    public void outtakePos() throws InterruptedException {
 
+        rightRampServo.setPosition(0.8);
+
+
+    }
+
+    public void intakePos() throws InterruptedException {
+
+        rightRampServo.setPosition(0.15);
+
+    }
 
     public void runOpMode() throws InterruptedException {
-        //Camera initialization
+        //Camera initialization Kadhir was Here :)
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
         WebcamName OpenCvCamera = hardwareMap.get(WebcamName.class, "frontCamera");
@@ -95,11 +114,15 @@ public class BlueAutonRight extends LinearOpMode {
         pipeline = new detectionPipeline();
 
         outtake = hardwareMap.crservo.get("outtake");
+        intakeServo = hardwareMap.crservo.get("intakeServo");
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
-        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
+//        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
+        rightRampServo = hardwareMap.get(Servo.class, "rightRampServo");
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+        rightRampServo.setDirection(rightRampServo.getDirection().REVERSE);
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -126,35 +149,51 @@ public class BlueAutonRight extends LinearOpMode {
 
         //Position 1
         Trajectory forward1 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(48, 0))
+                .lineToConstantHeading(new Vector2d(45,0 ))
                 .build();
+
+        Trajectory back1 = drive.trajectoryBuilder(forward1.end())
+                .lineToConstantHeading(new Vector2d(20,0 ))
+                .build();
+
 
 
 
         //Position 0
         Trajectory forward0 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(24, 0))
+                .lineToConstantHeading(new Vector2d(37,0 ))
                 .build();
 
-        Trajectory drop0 = drive.trajectoryBuilder(forward0.end())
-                .lineToConstantHeading(new Vector2d(24, -5))
+        Trajectory dropPos0 = drive.trajectoryBuilder((forward0.end()))
+                .lineToLinearHeading(new Pose2d(37, 1, Math.toRadians(90)))
                 .build();
 
+        Trajectory dropPos0_2 = drive.trajectoryBuilder(dropPos0.end())
+                .lineToConstantHeading(new Vector2d(37, 15 ))
+                .build();
 
-
+        Trajectory back0 = drive.trajectoryBuilder(dropPos0_2.end())
+                .lineToConstantHeading(new Vector2d(37, 0 ))
+                .build();
 
 
         //position2
 
         Trajectory forward2 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(24,0 ))
+                .lineToConstantHeading(new Vector2d(31,0 ))
                 .build();
 
-        Trajectory drop2 = drive.trajectoryBuilder(forward2.end())
-                .lineToConstantHeading(new Vector2d(24,5 ))
+        Trajectory dropPos2  = drive.trajectoryBuilder(forward2.end())
+                .lineToLinearHeading(new Pose2d(31, 1, Math.toRadians(-91)))
                 .build();
 
+        Trajectory dropPos2_2 = drive.trajectoryBuilder(dropPos2.end())
+                .lineToConstantHeading(new Vector2d(31,-22 ))
+                .build();
 
+        Trajectory back2 = drive.trajectoryBuilder(dropPos2_2.end())
+                .lineToConstantHeading(new Vector2d(31,0 ))
+                .build();
 
 
         int position = pipeline.getAnalysis();
@@ -176,25 +215,41 @@ public class BlueAutonRight extends LinearOpMode {
         if (opModeIsActive()) {
             if (position == 1) {
                 drive.followTrajectory(forward1);
-                pixel();
+                changeLift(500);
+                outtakeGround();
+                drive.followTrajectory(back1);
+                changeLift(0);
+                Thread.sleep(1000);
+
+
             }
 
             if (position == 0) {
                 drive.followTrajectory(forward0);
-                drive.turn(Math.toRadians(90));
-                drive.followTrajectory(drop0);
-                pixel();
+                drive.followTrajectory(dropPos0);
+                drive.followTrajectory(dropPos0_2);
+                changeLift(500);
+                outtakeGround();
+                drive.followTrajectory(back0);
+                changeLift(0);
+                Thread.sleep(1000);
+
+
+
             }
 
             if (position == 2) {
                 drive.followTrajectory(forward2);
-                drive.turn(Math.toRadians(-90));
-                drive.followTrajectory(drop2);
-                pixel();
+                drive.followTrajectory(dropPos2);
+                drive.followTrajectory(dropPos2_2);
+                changeLift(600);
+                outtakeGround();
+                drive.followTrajectory(back2);
+                changeLift(0);
+                Thread.sleep(1000);
+
+
             }
-
-
-
 
 
         }

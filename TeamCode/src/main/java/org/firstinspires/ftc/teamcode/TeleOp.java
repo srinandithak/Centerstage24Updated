@@ -8,7 +8,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp", group="Linear Opmode")
@@ -21,12 +23,19 @@ public class TeleOp extends LinearOpMode {
     public DcMotorEx liftMotor;
     public DcMotorEx intakeMotor;
 
+    public DcMotorEx rightSuspension;
+    public DcMotorEx leftSuspension;
+
     public CRServo intakeServo;
     public CRServo outtake;
-    public Servo droneLauncher;
+    public CRServo droneLauncher;
 
     public Servo rightRampServo;
     public Servo leftRampServo;
+
+    public DistanceSensor distanceSensorLeft;
+
+    public DistanceSensor distanceSensorRight;
 
     public double initialPositionRight;
     public double initialPositionLeft;
@@ -36,11 +45,15 @@ public class TeleOp extends LinearOpMode {
     public boolean turtleMode = false;
 
     //Other variables
-    public static final double NORMAL_SPEED = 0.75;
+    public static final double NORMAL_SPEED = 1;
     public static final double TURTLE_SPEED = 0.25;
     public double robotSpeed = NORMAL_SPEED;
-    public double rotationSpeed = .75;
+    public double rotationSpeed = 1;
     public boolean fieldOriented = false;
+
+    public double idealPosition() {
+        return 0;
+    }
 
 
     @Override
@@ -61,14 +74,18 @@ public class TeleOp extends LinearOpMode {
         // Reverse the motor that runs backwards when connected directly to the battery
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        rightSuspension = hardwareMap.get(DcMotorEx.class, "rightSuspension");
+        leftSuspension = hardwareMap.get(DcMotorEx.class, "leftSuspension");
         intakeServo = hardwareMap.crservo.get("intakeServo");
         outtake = hardwareMap.crservo.get("outtake");
-        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
+        droneLauncher = hardwareMap.crservo.get("droneLauncher");
         rightRampServo = hardwareMap.get(Servo.class, "rightRampServo");
         leftRampServo = hardwareMap.get(Servo.class, "leftRampServo");
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
+        // distanceSensorLeft = hardwareMap.get(DistanceSensor.class, "distanceSensorLeft");
+       // distanceSensorRight = hardwareMap.get(DistanceSensor.class, "distanceSensorRight");
         initialPositionLeft = leftRampServo.getPosition();
         initialPositionRight = rightRampServo.getPosition();
 
@@ -80,6 +97,14 @@ public class TeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
+            // distance sensors
+
+//            double d1 = distanceSensorLeft.getDistance(DistanceUnit.MM);
+//
+//            double d2 = distanceSensorRight.getDistance(DistanceUnit.MM);
+
+            // autoposition
+
             rightRampServo.setDirection(rightRampServo.getDirection().REVERSE);
             // ramp servo positions
             telemetry.addData("Right Ramp Servo Position", rightRampServo.getPosition());
@@ -90,39 +115,49 @@ public class TeleOp extends LinearOpMode {
             //droneLauncher
             if (gamepad1.x || gamepad2.x) {
                 //test position
-                droneLauncher.setPosition(0.5);
+                droneLauncher.setPower(1);
+            } else {
+                droneLauncher.setPower(0);
             }
 
             //rampServo
-            if (liftMotor.getCurrentPosition() >= 1500) {
+            if (liftMotor.getCurrentPosition() >= 1900) {
                 //test position
-                rightRampServo.setPosition(0.8);
+                rightRampServo.setPosition(.76);
            //     leftRampServo.setPosition(leftRampServo.getPosition() + 0.5);
             }
 
-            if (liftMotor.getCurrentPosition() < 1500) {
+            if (liftMotor.getCurrentPosition() < 1900) {
 
-                rightRampServo.setPosition(0.15);
+                rightRampServo.setPosition(0);
           //      leftRampServo.setPosition(0);
             }
 
             //intake
             if (gamepad1.right_bumper || gamepad2.right_bumper) {
                 intakeMotor.setPower(1);
-                intakeServo.setPower(-1);
             } else if (gamepad1.left_bumper || gamepad2.left_bumper) {
                 intakeMotor.setPower(-1);
-                intakeServo.setPower(1);
             } else {
                 intakeMotor.setPower(0);
+            }
+
+            //middle servo
+
+            if (gamepad1.right_bumper || gamepad2.right_bumper || gamepad1.a || gamepad2.a) {
+                intakeServo.setPower(-1);
+            } else if (gamepad1.left_bumper || gamepad2.left_bumper || gamepad1.y || gamepad2.y) {
+                intakeServo.setPower(1);
+            } else {
                 intakeServo.setPower(0);
             }
 
             //outtake
+
             if (gamepad1.y || gamepad2.y){
-                outtake.setPower(1);
-            } else if (gamepad1.a || gamepad2.a) {
                 outtake.setPower(-1);
+            } else if (gamepad1.a || gamepad2.a) {
+                outtake.setPower(1);
             } else {
                 outtake.setPower(0);
             }
@@ -166,6 +201,19 @@ public class TeleOp extends LinearOpMode {
                 fieldOriented = false;
             }
 
+            if (gamepad1.dpad_down || gamepad2.dpad_down) {
+                leftSuspension.setPower(0.2);
+                rightSuspension.setPower(-0.2);
+            }
+            else if (gamepad1.dpad_up || gamepad2.dpad_up) {
+                leftSuspension.setPower(-0.2);
+                rightSuspension.setPower(0.2);
+            }
+            else {
+                leftSuspension.setPower(0);
+                rightSuspension.setPower(0);
+            }
+
 
             //movement
             // Read pose
@@ -173,6 +221,15 @@ public class TeleOp extends LinearOpMode {
 
             // Create a vector from the gamepad x/y inputs
             // Then, rotate that vector by the inverse of that heading
+
+           // if (d1 < 10 && d2 < 10 && d1 > 5 && d2 > 5) {
+//            //    while (d1 < d2) {
+////                    moveLeftWheelForward();
+//                }
+//            //    while (d2 < d1) {
+////                    moveRightWheelForward();
+//                }
+//            }
             Vector2d input = new Vector2d(
                     -gamepad1.left_stick_y,
                     -gamepad1.left_stick_x

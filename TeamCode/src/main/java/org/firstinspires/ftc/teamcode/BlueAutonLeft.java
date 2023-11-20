@@ -105,7 +105,7 @@ public class BlueAutonLeft extends LinearOpMode {
     }
 
     public void runOpMode() throws InterruptedException {
-        //Camera initialization
+        //Camera initialization Kadhir was Here :)
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
         WebcamName OpenCvCamera = hardwareMap.get(WebcamName.class, "frontCamera");
@@ -117,7 +117,7 @@ public class BlueAutonLeft extends LinearOpMode {
         intakeServo = hardwareMap.crservo.get("intakeServo");
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
-        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
+//        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
         rightRampServo = hardwareMap.get(Servo.class, "rightRampServo");
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -149,7 +149,7 @@ public class BlueAutonLeft extends LinearOpMode {
 
         //Position 1
         Trajectory forward1 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(45, 0))
+                .lineToConstantHeading(new Vector2d(46.5, 0))
                 .build();
 
 //        Trajectory forward1_2 = drive.trajectoryBuilder(forward1.end())
@@ -157,12 +157,12 @@ public class BlueAutonLeft extends LinearOpMode {
 //                .build();
 
         Trajectory backTurn1 = drive.trajectoryBuilder(forward1.end())
-                .lineToLinearHeading(new Pose2d(19, 0, Math.toRadians(93)))
+                .lineToLinearHeading(new Pose2d(19, 5, Math.toRadians(93)))
                 .build();
 
 
         Trajectory dropPos1 = drive.trajectoryBuilder(backTurn1.end())
-                .lineToConstantHeading(new Vector2d(19, 44))
+                .lineToConstantHeading(new Vector2d(25, 44))
                 .build();
 
         Trajectory park1 = drive.trajectoryBuilder(dropPos1.end())
@@ -170,11 +170,11 @@ public class BlueAutonLeft extends LinearOpMode {
                 .build();
 
         Trajectory park1_2 = drive.trajectoryBuilder(park1.end())
-                .lineToConstantHeading(new Vector2d(-31, 25))
+                .lineToConstantHeading(new Vector2d(-25, 25))
                 .build();
 
         Trajectory park1_3 = drive.trajectoryBuilder(park1_2.end())
-                .lineToConstantHeading(new Vector2d(-31, 45))
+                .lineToConstantHeading(new Vector2d(-25, 50))
                 .build();
 
 
@@ -183,43 +183,63 @@ public class BlueAutonLeft extends LinearOpMode {
 
         //Position 0
         Trajectory forward0 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(24,0 ))
+                .lineToConstantHeading(new Vector2d(31,20 ))
                 .build();
 
-        Trajectory dropPos0 = drive.trajectoryBuilder(forward0.end())
-                .lineToConstantHeading(new Vector2d(24,24 ))
+        Trajectory back0 = drive.trajectoryBuilder(forward0.end())
+                .lineToConstantHeading(new Vector2d(29,20 ))
+                .build();
+
+        Trajectory turn = drive.trajectoryBuilder(back0.end())
+                .lineToLinearHeading(new Pose2d(31, 24, Math.toRadians(90)))
+                .build();
+
+        Trajectory dropPos0 = drive.trajectoryBuilder(turn.end())
+                .lineToConstantHeading(new Vector2d(19,25 ))
                 .build();
 
         Trajectory backBoard0 = drive.trajectoryBuilder(dropPos0.end())
-                .lineToConstantHeading(new Vector2d(20,40 ))
+                .lineToConstantHeading(new Vector2d(9,50.5))
                 .build();
 
 
         Trajectory park0 =  drive.trajectoryBuilder(backBoard0.end())
-                .lineToConstantHeading(new Vector2d(20, 30))
+                .lineToConstantHeading(new Vector2d(18, 32))
                 .build();
 
         Trajectory park0_2 = drive.trajectoryBuilder(park0.end())
-                .lineToConstantHeading(new Vector2d(-31, 30))
+                .lineToConstantHeading(new Vector2d(-24, 30))
                 .build();
 
         Trajectory park0_3 = drive.trajectoryBuilder(park0_2.end())
-                .lineToConstantHeading(new Vector2d(-31, 42))
+                .lineToConstantHeading(new Vector2d(-24, 60))
                 .build();
 
 
         //position2
 
         Trajectory forward2 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(24,0 ))
+                .lineToConstantHeading(new Vector2d(29,0 ))
                 .build();
 
         Trajectory dropPos2 = drive.trajectoryBuilder((forward2.end()))
-                .lineToConstantHeading(new Vector2d(24,-5))
+                .lineToLinearHeading(new Pose2d(29, 1, Math.toRadians(-90)))
                 .build();
 
-        Trajectory backBoard2 = drive.trajectoryBuilder(dropPos2.end())
-                .lineToConstantHeading(new Vector2d(30,40))
+        Trajectory dropPos2_2 = drive.trajectoryBuilder((dropPos2.end()))
+                .lineToConstantHeading(new Vector2d(30, -23))
+                .build();
+
+        Trajectory dropPos2_3 = drive.trajectoryBuilder((dropPos2_2.end()))
+                .lineToConstantHeading(new Vector2d(30, 8))
+                .build();
+
+        Trajectory dropPos2_4 = drive.trajectoryBuilder((dropPos2_3.end()))
+                .lineToLinearHeading(new Pose2d(34, 1, Math.toRadians(87)))
+                .build();
+
+        Trajectory backBoard2 = drive.trajectoryBuilder(dropPos2_4.end())
+                .lineToConstantHeading(new Vector2d(57,38))
                 .build();
 
         Trajectory park2 =  drive.trajectoryBuilder(backBoard2.end())
@@ -227,11 +247,11 @@ public class BlueAutonLeft extends LinearOpMode {
                 .build();
 
         Trajectory park2_2 =  drive.trajectoryBuilder(park2.end())
-                .lineToConstantHeading(new Vector2d(-31, 30))
+                .lineToConstantHeading(new Vector2d(-10, 30))
                 .build();
 
         Trajectory park2_3 =  drive.trajectoryBuilder(park2_2.end())
-                .lineToConstantHeading(new Vector2d(-31, 42))
+                .lineToConstantHeading(new Vector2d(-10, 55))
                 .build();
 
 
@@ -258,12 +278,12 @@ public class BlueAutonLeft extends LinearOpMode {
                 changeLift(500);
                 outtakeGround();
                 Thread.sleep(1000);
-                changeLift(0);
                 //drive.followTrajectory(forward1_2);
                 drive.followTrajectory(backTurn1);
+                changeLift(0);
                 //goes to backboard
                 drive.followTrajectory(dropPos1);
-                changeLift(1650);
+                changeLift(1750);
                 outtakePos();
                 Thread.sleep(1000);
                 outtake();
@@ -276,17 +296,23 @@ public class BlueAutonLeft extends LinearOpMode {
 
             if (position == 0) {
                 drive.followTrajectory(forward0);
-                drive.turn(Math.toRadians(93));
+                drive.followTrajectory(turn);
+                changeLift(500);
+                outtakeGround();
+                Thread.sleep(1000);
                 drive.followTrajectory(dropPos0);
-                pixel();
                 drive.followTrajectory(backBoard0);
                 changeLift(1650);
-                //rampPos();
+                outtakePos();
+                Thread.sleep(1000);
                 outtake();
                 drive.followTrajectory(park0);
                 drive.followTrajectory(park0_2);
-                drive.followTrajectory(park0_3);
+                intakePos();
+                Thread.sleep(500);
                 changeLift(0);
+                drive.followTrajectory(park0_3);
+
                 //rampPos();
 
 
@@ -294,17 +320,25 @@ public class BlueAutonLeft extends LinearOpMode {
 
             if (position == 2) {
                 drive.followTrajectory(forward2);
-                drive.turn(Math.toRadians(93));
                 drive.followTrajectory(dropPos2);
-                pixel();
+                drive.followTrajectory(dropPos2_2);
+                changeLift(600);
+                outtakeGround();
+                Thread.sleep(1000);
+                drive.followTrajectory(dropPos2_3);
+                drive.followTrajectory(dropPos2_4);
                 drive.followTrajectory(backBoard2);
                 changeLift(1650);
                 //rampPos();
+                outtakePos();
+                Thread.sleep(1000);
                 outtake();
                 drive.followTrajectory(park2);
+                intakePos();
                 drive.followTrajectory(park2_2);
-                drive.followTrajectory(park2_3);
                 changeLift(0);
+                drive.followTrajectory(park2_3);
+
                 //rampPos();
 
             }

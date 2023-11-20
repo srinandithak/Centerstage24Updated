@@ -135,7 +135,7 @@ public class detectionPipeline extends OpenCvPipeline {
          */
 
         //if its a small value, we assume its from region 3
-        if (max < 134) {
+        if (max < 140) {
             Position = 2;
         }
         else if (max == avg1) // Was it from region 1?
