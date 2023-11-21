@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.teamcode.TeleOp.NORMAL_SPEED;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -34,6 +36,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -52,6 +55,64 @@ public class BlueAutonLeft extends LinearOpMode {
     public CRServo intakeServo;
     public CRServo outtake;
     public Servo droneLauncher;
+
+    public DistanceSensor distanceSensorLeft;
+
+    public DistanceSensor distanceSensorRight;
+    public double robotSpeed = NORMAL_SPEED;
+    public double rotationSpeed = 1;
+
+    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+
+    public void distanceSensor() {
+        if (gamepad1.dpad_left || gamepad2.dpad_left) {
+
+            if (distanceSensorLeft.getDistance(DistanceUnit.INCH) > distanceSensorRight.getDistance(DistanceUnit.INCH)) {
+                while(distanceSensorLeft.getDistance(DistanceUnit.INCH) >= distanceSensorRight.getDistance(DistanceUnit.INCH))
+                    drive.setWeightedDrivePower(
+                            new Pose2d(
+                                    -gamepad1.left_stick_y * robotSpeed,
+                                    -gamepad1.left_stick_x * robotSpeed,
+                                    -1
+                            )
+                    );
+            }
+
+            if (distanceSensorRight.getDistance(DistanceUnit.INCH) > distanceSensorLeft.getDistance(DistanceUnit.INCH)) {
+                while(distanceSensorRight.getDistance(DistanceUnit.INCH) >= distanceSensorLeft.getDistance(DistanceUnit.INCH))
+                    drive.setWeightedDrivePower(
+                            new Pose2d(
+                                    -gamepad1.left_stick_y * robotSpeed,
+                                    -gamepad1.left_stick_x * robotSpeed,
+                                    1
+                            )
+                    );
+            }
+
+            if (distanceSensorLeft.getDistance(DistanceUnit.INCH) < 7.559) {
+                while (distanceSensorLeft.getDistance(DistanceUnit.INCH) <= 7.559) {
+                    drive.setWeightedDrivePower(
+                            new Pose2d(
+                                    -gamepad1.left_stick_y * robotSpeed,
+                                    -gamepad1.left_stick_x * robotSpeed,
+                                    -gamepad1.right_stick_x * robotSpeed * rotationSpeed
+                            )
+                    );
+                }
+            } else if (distanceSensorLeft.getDistance(DistanceUnit.INCH) > 7.559) {
+                while (distanceSensorLeft.getDistance(DistanceUnit.INCH) >= 7.559) {
+                    drive.setWeightedDrivePower(
+                            new Pose2d(
+                                    -gamepad1.left_stick_y * robotSpeed,
+                                    -gamepad1.left_stick_x * robotSpeed,
+                                    -gamepad1.right_stick_x * robotSpeed * rotationSpeed
+                            )
+                    );
+                }
+            }
+        }
+    }
 
     public void changeLift (int height)  throws InterruptedException {
         Thread.sleep(100);
@@ -119,6 +180,8 @@ public class BlueAutonLeft extends LinearOpMode {
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 //        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
         rightRampServo = hardwareMap.get(Servo.class, "rightRampServo");
+        distanceSensorLeft = hardwareMap.get(DistanceSensor.class, "distanceSensorLeft");
+        distanceSensorRight = hardwareMap.get(DistanceSensor.class, "distanceSensorRight");
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
@@ -162,7 +225,7 @@ public class BlueAutonLeft extends LinearOpMode {
 
 
         Trajectory dropPos1 = drive.trajectoryBuilder(backTurn1.end())
-                .lineToConstantHeading(new Vector2d(25, 44))
+                .lineToConstantHeading(new Vector2d(25, 42))
                 .build();
 
         Trajectory park1 = drive.trajectoryBuilder(dropPos1.end())
@@ -199,7 +262,7 @@ public class BlueAutonLeft extends LinearOpMode {
                 .build();
 
         Trajectory backBoard0 = drive.trajectoryBuilder(dropPos0.end())
-                .lineToConstantHeading(new Vector2d(9,50.5))
+                .lineToConstantHeading(new Vector2d(9,49))
                 .build();
 
 
@@ -239,7 +302,7 @@ public class BlueAutonLeft extends LinearOpMode {
                 .build();
 
         Trajectory backBoard2 = drive.trajectoryBuilder(dropPos2_4.end())
-                .lineToConstantHeading(new Vector2d(57,38))
+                .lineToConstantHeading(new Vector2d(57,36))
                 .build();
 
         Trajectory park2 =  drive.trajectoryBuilder(backBoard2.end())
@@ -284,6 +347,7 @@ public class BlueAutonLeft extends LinearOpMode {
                 //goes to backboard
                 drive.followTrajectory(dropPos1);
                 changeLift(1750);
+                distanceSensor();
                 outtakePos();
                 Thread.sleep(1000);
                 outtake();
@@ -303,6 +367,7 @@ public class BlueAutonLeft extends LinearOpMode {
                 drive.followTrajectory(dropPos0);
                 drive.followTrajectory(backBoard0);
                 changeLift(1650);
+                distanceSensor();
                 outtakePos();
                 Thread.sleep(1000);
                 outtake();
@@ -329,6 +394,7 @@ public class BlueAutonLeft extends LinearOpMode {
                 drive.followTrajectory(dropPos2_4);
                 drive.followTrajectory(backBoard2);
                 changeLift(1650);
+                distanceSensor();
                 //rampPos();
                 outtakePos();
                 Thread.sleep(1000);

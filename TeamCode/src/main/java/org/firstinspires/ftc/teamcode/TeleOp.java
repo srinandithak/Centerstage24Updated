@@ -30,6 +30,9 @@ public class TeleOp extends LinearOpMode {
     public CRServo outtake;
     public CRServo droneLauncher;
 
+    public CRServo rightSuspensionServo;
+    public CRServo leftSuspensionServo;
+
     public Servo rightRampServo;
     public Servo leftRampServo;
 
@@ -74,9 +77,11 @@ public class TeleOp extends LinearOpMode {
         // Reverse the motor that runs backwards when connected directly to the battery
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
-        rightSuspension = hardwareMap.get(DcMotorEx.class, "rightSuspension");
-        leftSuspension = hardwareMap.get(DcMotorEx.class, "leftSuspension");
+//        rightSuspension = hardwareMap.get(DcMotorEx.class, "rightSuspension");
+//        leftSuspension = hardwareMap.get(DcMotorEx.class, "leftSuspension");
         intakeServo = hardwareMap.crservo.get("intakeServo");
+        leftSuspensionServo = hardwareMap.crservo.get("leftSuspension");
+        rightSuspensionServo = hardwareMap.crservo.get("rightSuspension");
         outtake = hardwareMap.crservo.get("outtake");
         droneLauncher = hardwareMap.crservo.get("droneLauncher");
         rightRampServo = hardwareMap.get(Servo.class, "rightRampServo");
@@ -262,19 +267,26 @@ public class TeleOp extends LinearOpMode {
 //            }
 
 
-            if (gamepad1.dpad_down || gamepad2.dpad_down) {
-                leftSuspension.setPower(0.2);
-                rightSuspension.setPower(-0.2);
-            }
-            else if (gamepad1.dpad_up || gamepad2.dpad_up) {
-                leftSuspension.setPower(-0.2);
-                rightSuspension.setPower(0.2);
-            }
-            else {
-                leftSuspension.setPower(0);
-                rightSuspension.setPower(0);
-            }
+//            if (gamepad1.dpad_down || gamepad2.dpad_down) {
+//                leftSuspension.setPower(0.2);
+//                rightSuspension.setPower(-0.2);
+//            }
+//            else if (gamepad1.dpad_up || gamepad2.dpad_up) {
+//                leftSuspension.setPower(-0.2);
+//                rightSuspension.setPower(0.2);
+//            }
+//            else {
+//                leftSuspension.setPower(0);
+//                rightSuspension.setPower(0);
+//            }
 
+            if (gamepad2.dpad_down) {
+                leftSuspensionServo.setPower(-.1);
+                rightSuspensionServo.setPower(-.5);
+            } else if (gamepad2.dpad_up){
+                leftSuspensionServo.setPower(.1);
+                rightSuspensionServo.setPower(.5);
+            }
 
             //movement
             // Read pose
