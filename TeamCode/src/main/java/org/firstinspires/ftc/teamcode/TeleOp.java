@@ -84,8 +84,8 @@ public class TeleOp extends LinearOpMode {
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        // distanceSensorLeft = hardwareMap.get(DistanceSensor.class, "distanceSensorLeft");
-       // distanceSensorRight = hardwareMap.get(DistanceSensor.class, "distanceSensorRight");
+        distanceSensorLeft = hardwareMap.get(DistanceSensor.class, "distanceSensorLeft");
+        distanceSensorRight = hardwareMap.get(DistanceSensor.class, "distanceSensorRight");
         initialPositionLeft = leftRampServo.getPosition();
         initialPositionRight = rightRampServo.getPosition();
 
@@ -97,7 +97,6 @@ public class TeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            // distance sensors
 
 //            double d1 = distanceSensorLeft.getDistance(DistanceUnit.MM);
 //
@@ -112,6 +111,53 @@ public class TeleOp extends LinearOpMode {
             telemetry.update();
 
 
+            //distance sensor
+            if (gamepad1.dpad_left || gamepad2.dpad_left) {
+
+                if (distanceSensorLeft.getDistance(DistanceUnit.INCH) > distanceSensorRight.getDistance(DistanceUnit.INCH)) {
+                    while(distanceSensorLeft.getDistance(DistanceUnit.INCH) >= distanceSensorRight.getDistance(DistanceUnit.INCH))
+                    drive.setWeightedDrivePower(
+                            new Pose2d(
+                                    -gamepad1.left_stick_y * robotSpeed,
+                                    -gamepad1.left_stick_x * robotSpeed,
+                                    -1
+                            )
+                    );
+                }
+
+                if (distanceSensorRight.getDistance(DistanceUnit.INCH) > distanceSensorLeft.getDistance(DistanceUnit.INCH)) {
+                    while(distanceSensorRight.getDistance(DistanceUnit.INCH) >= distanceSensorLeft.getDistance(DistanceUnit.INCH))
+                        drive.setWeightedDrivePower(
+                                new Pose2d(
+                                        -gamepad1.left_stick_y * robotSpeed,
+                                        -gamepad1.left_stick_x * robotSpeed,
+                                        1
+                                )
+                        );
+                }
+
+                if (distanceSensorLeft.getDistance(DistanceUnit.INCH) < 7.559) {
+                    while (distanceSensorLeft.getDistance(DistanceUnit.INCH) <= 7.559) {
+                        drive.setWeightedDrivePower(
+                                new Pose2d(
+                                        -gamepad1.left_stick_y * robotSpeed,
+                                        -gamepad1.left_stick_x * robotSpeed,
+                                        -gamepad1.right_stick_x * robotSpeed * rotationSpeed
+                                )
+                        );
+                    }
+                } else if (distanceSensorLeft.getDistance(DistanceUnit.INCH) > 7.559) {
+                    while (distanceSensorLeft.getDistance(DistanceUnit.INCH) >= 7.559) {
+                        drive.setWeightedDrivePower(
+                                new Pose2d(
+                                        -gamepad1.left_stick_y * robotSpeed,
+                                        -gamepad1.left_stick_x * robotSpeed,
+                                        -gamepad1.right_stick_x * robotSpeed * rotationSpeed
+                                )
+                        );
+                    }
+                }
+            }
             //droneLauncher
             if (gamepad1.x || gamepad2.x) {
                 //test position
@@ -194,12 +240,13 @@ public class TeleOp extends LinearOpMode {
             }
 
             //fieldOriented toggle
-            if (gamepad1.dpad_left && !fieldOriented) {
-                drive.setPoseEstimate(new Pose2d(0,0,0));
-                fieldOriented = true;
-            } else if (gamepad1.dpad_right && fieldOriented) {
-                fieldOriented = false;
-            }
+//            if (gamepad1.dpad_left && !fieldOriented) {
+//                drive.setPoseEstimate(new Pose2d(0,0,0));
+//                fieldOriented = true;
+//            } else if (gamepad1.dpad_right && fieldOriented) {
+//                fieldOriented = false;
+//            }
+
 
             if (gamepad1.dpad_down || gamepad2.dpad_down) {
                 leftSuspension.setPower(0.2);
