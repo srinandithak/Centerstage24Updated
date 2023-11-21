@@ -108,56 +108,70 @@ public class TeleOp extends LinearOpMode {
             // ramp servo positions
             telemetry.addData("Right Ramp Servo Position", rightRampServo.getPosition());
             telemetry.addData("Left Ramp Servo Position", leftRampServo.getPosition());
+//            telemetry.addData("Left Distance Sensor", distanceSensorLeft.getDistance(DistanceUnit.INCH));
+//            telemetry.addData("Right Distance Sensor", distanceSensorRight.getDistance(DistanceUnit.INCH));
+
             telemetry.update();
+
 
 
             //distance sensor
             if (gamepad1.dpad_left || gamepad2.dpad_left) {
 
-                if (distanceSensorLeft.getDistance(DistanceUnit.INCH) > distanceSensorRight.getDistance(DistanceUnit.INCH)) {
-                    while(distanceSensorLeft.getDistance(DistanceUnit.INCH) >= distanceSensorRight.getDistance(DistanceUnit.INCH))
-                    drive.setWeightedDrivePower(
-                            new Pose2d(
-                                    -gamepad1.left_stick_y * robotSpeed,
-                                    -gamepad1.left_stick_x * robotSpeed,
-                                    -1
-                            )
-                    );
-                }
-
-                if (distanceSensorRight.getDistance(DistanceUnit.INCH) > distanceSensorLeft.getDistance(DistanceUnit.INCH)) {
-                    while(distanceSensorRight.getDistance(DistanceUnit.INCH) >= distanceSensorLeft.getDistance(DistanceUnit.INCH))
+                if (distanceSensorLeft.getDistance(DistanceUnit.INCH) >= distanceSensorRight.getDistance(DistanceUnit.INCH)) {
+                    while(distanceSensorLeft.getDistance(DistanceUnit.INCH) >= distanceSensorRight.getDistance(DistanceUnit.INCH)) {
+                        if (gamepad1.dpad_right) break;
                         drive.setWeightedDrivePower(
                                 new Pose2d(
-                                        -gamepad1.left_stick_y * robotSpeed,
-                                        -gamepad1.left_stick_x * robotSpeed,
-                                        1
-                                )
-                        );
-                }
-
-                if (distanceSensorLeft.getDistance(DistanceUnit.INCH) < 7.559) {
-                    while (distanceSensorLeft.getDistance(DistanceUnit.INCH) <= 7.559) {
-                        drive.setWeightedDrivePower(
-                                new Pose2d(
-                                        -gamepad1.left_stick_y * robotSpeed,
-                                        -gamepad1.left_stick_x * robotSpeed,
-                                        -gamepad1.right_stick_x * robotSpeed * rotationSpeed
+                                        0,
+                                        0,
+                                        -0.2
                                 )
                         );
                     }
-                } else if (distanceSensorLeft.getDistance(DistanceUnit.INCH) > 7.559) {
-                    while (distanceSensorLeft.getDistance(DistanceUnit.INCH) >= 7.559) {
+                }
+
+                else {
+                    while(distanceSensorRight.getDistance(DistanceUnit.INCH) >= distanceSensorLeft.getDistance(DistanceUnit.INCH)) {
+                        if (gamepad1.dpad_right) break;
                         drive.setWeightedDrivePower(
                                 new Pose2d(
-                                        -gamepad1.left_stick_y * robotSpeed,
-                                        -gamepad1.left_stick_x * robotSpeed,
-                                        -gamepad1.right_stick_x * robotSpeed * rotationSpeed
+                                        0,
+                                        0,
+                                        0.2
+                                )
+                        );
+                    }
+                }
+
+                if (distanceSensorLeft.getDistance(DistanceUnit.INCH) > 8.5) {
+                    while (distanceSensorLeft.getDistance(DistanceUnit.INCH) >= 8.5) {
+                        drive.setWeightedDrivePower(
+                                new Pose2d(
+                                        0.2,
+                                        0,
+                                        0
                                 )
                         );
                     }
                 }
             }
+
+
+
+//
+//                } else if (distanceSensorLeft.getDistance(DistanceUnit.INCH) > 7.559) {
+//                    while (distanceSensorLeft.getDistance(DistanceUnit.INCH) >= 7.559) {
+//                        drive.setWeightedDrivePower(
+//                                new Pose2d(
+//                                        -gamepad1.left_stick_y * robotSpeed,
+//                                        -gamepad1.left_stick_x * robotSpeed,
+//                                        -gamepad1.right_stick_x * robotSpeed * rotationSpeed
+//                                )
+//                        );
+//                    }
+//                }
+
             //droneLauncher
             if (gamepad1.x || gamepad2.x) {
                 //test position
