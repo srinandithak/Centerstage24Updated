@@ -155,41 +155,42 @@ public class RedAutonRight extends LinearOpMode {
 
         //Position 2
         Trajectory forward0 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(31,-20 ))
+                .lineToLinearHeading(new Pose2d(31, 0, Math.toRadians(93)))
                 .build();
 
-        Trajectory back0 = drive.trajectoryBuilder(forward0.end())
-                .lineToConstantHeading(new Vector2d(29,-20 ))
+        Trajectory dropPos0 = drive.trajectoryBuilder(forward0.end())
+                .lineToConstantHeading(new Vector2d(31,-5.5))
                 .build();
 
-        Trajectory turn = drive.trajectoryBuilder(back0.end())
-                .lineToLinearHeading(new Pose2d(34, -27, Math.toRadians(-90)))
+        Trajectory move0 = drive.trajectoryBuilder(dropPos0.end())
+                .lineToConstantHeading(new Vector2d(31,-22))
                 .build();
+//
+//        Trajectory turn0 = drive.trajectoryBuilder(move0.end())
+//;
+////                .lineToLinearHeading(new Pose2d(31, 23, 85))
+//                .build();
 
-        Trajectory dropPos0 = drive.trajectoryBuilder(turn.end())
-                .lineToConstantHeading(new Vector2d(21,-28 ))
-                .build();
-
-        Trajectory backBoard0 = drive.trajectoryBuilder(dropPos0.end())
-                .lineToConstantHeading(new Vector2d(12,-55))
+        Trajectory backBoard0 = drive.trajectoryBuilder(move0.end().plus(new Pose2d(0, 0, Math.toRadians(180))))
+                .lineToConstantHeading(new Vector2d(24,-33.5))
                 .build();
 
 
         Trajectory park0 =  drive.trajectoryBuilder(backBoard0.end())
-                .lineToConstantHeading(new Vector2d(16, -29))
+                .lineToConstantHeading(new Vector2d(-3, -20))
                 .build();
 
         Trajectory park0_2 = drive.trajectoryBuilder(park0.end())
-                .lineToConstantHeading(new Vector2d(-27, -30))
+                .lineToConstantHeading(new Vector2d(-3, -40))
                 .build();
 
-        Trajectory park0_3 = drive.trajectoryBuilder(park0_2.end())
-                .lineToConstantHeading(new Vector2d(-27, -63))
-                .build();
+//        Trajectory park0_3 = drive.trajectoryBuilder(park0_2.end())
+//                .lineToConstantHeading(new Vector2d(-5, 25))
+//                .build();
 
         //Position 1
         Trajectory forward1 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(51, 0))
+                .lineToConstantHeading(new Vector2d(42, 0))
                 .build();
 
 //        Trajectory forward1_2 = drive.trajectoryBuilder(forward1.end())
@@ -197,12 +198,12 @@ public class RedAutonRight extends LinearOpMode {
 //                .build();
 
         Trajectory backTurn1 = drive.trajectoryBuilder(forward1.end())
-                .lineToLinearHeading(new Pose2d(19, -10, Math.toRadians(-93)))
+                .lineToLinearHeading(new Pose2d(19, -10, Math.toRadians(-90)))
                 .build();
 
 
         Trajectory dropPos1 = drive.trajectoryBuilder(backTurn1.end())
-                .lineToConstantHeading(new Vector2d(27, -47))
+                .lineToConstantHeading(new Vector2d(26, -43))
                 .build();
 
         Trajectory park1 = drive.trajectoryBuilder(dropPos1.end())
@@ -210,39 +211,39 @@ public class RedAutonRight extends LinearOpMode {
                 .build();
 
         Trajectory park1_2 = drive.trajectoryBuilder(park1.end())
-                .lineToConstantHeading(new Vector2d(-14, -25))
+                .lineToConstantHeading(new Vector2d(-7, -25))
                 .build();
 
         Trajectory park1_3 = drive.trajectoryBuilder(park1_2.end())
-                .lineToConstantHeading(new Vector2d(-17, -54))
+                .lineToConstantHeading(new Vector2d(-7, -54))
                 .build();
 
 
         //position 0
 
         Trajectory forward2 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(32,0 ))
+                .lineToConstantHeading(new Vector2d(27,0 ))
                 .build();
 
         Trajectory dropPos2 = drive.trajectoryBuilder((forward2.end()))
-                .lineToLinearHeading(new Pose2d(32, 1, Math.toRadians(93)), SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(27, 1, Math.toRadians(90)), SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
         Trajectory dropPos2_2 = drive.trajectoryBuilder((dropPos2.end()))
-                .lineToConstantHeading(new Vector2d(32, 25))
+                .lineToConstantHeading(new Vector2d(27, 18))
                 .build();
 
         Trajectory dropPos2_3 = drive.trajectoryBuilder((dropPos2_2.end()))
-                .lineToConstantHeading(new Vector2d(30, -8))
+                .lineToConstantHeading(new Vector2d(29, -8))
                 .build();
 
         Trajectory dropPos2_4 = drive.trajectoryBuilder((dropPos2_3.end()))
-                .lineToLinearHeading(new Pose2d(32, -1, Math.toRadians(-87)))
+                .lineToLinearHeading(new Pose2d(27, -1, Math.toRadians(-94)))
                 .build();
 
         Trajectory backBoard2 = drive.trajectoryBuilder(dropPos2_4.end())
-                .lineToConstantHeading(new Vector2d(53,-38))
+                .lineToConstantHeading(new Vector2d(32,-32))
                 .build();
 
         Trajectory park2 =  drive.trajectoryBuilder(backBoard2.end())
@@ -250,11 +251,11 @@ public class RedAutonRight extends LinearOpMode {
                 .build();
 
         Trajectory park2_2 =  drive.trajectoryBuilder(park2.end())
-                .lineToConstantHeading(new Vector2d(-11, -30))
+                .lineToConstantHeading(new Vector2d(-5, -20))
                 .build();
 
         Trajectory park2_3 =  drive.trajectoryBuilder(park2_2.end())
-                .lineToConstantHeading(new Vector2d(-11, -55))
+                .lineToConstantHeading(new Vector2d(-5, -40))
                 .build();
 
 
@@ -278,7 +279,7 @@ public class RedAutonRight extends LinearOpMode {
         if (opModeIsActive()) {
             if (position == 1) {
                 drive.followTrajectory(forward1);
-                changeLift(500);
+                changeLift(600);
                 outtakeGround();
                 Thread.sleep(1000);
                 //drive.followTrajectory(forward1_2);
@@ -299,22 +300,25 @@ public class RedAutonRight extends LinearOpMode {
 
             if (position == 2) {
                 drive.followTrajectory(forward0);
-                drive.followTrajectory(turn);
-                changeLift(500);
+                drive.followTrajectory(dropPos0);
+                changeLift(750);
                 outtakeGround();
                 Thread.sleep(1000);
-                drive.followTrajectory(dropPos0);
+                drive.followTrajectory(move0);
+//                drive.followTrajectory(turn0);
+
+                drive.turn(Math.toRadians(177));
                 drive.followTrajectory(backBoard0);
                 changeLift(1650);
+                // distanceSensor();
                 outtakePos();
                 Thread.sleep(1000);
                 outtake();
                 drive.followTrajectory(park0);
                 drive.followTrajectory(park0_2);
                 intakePos();
-                Thread.sleep(500);
                 changeLift(0);
-                drive.followTrajectory(park0_3);
+                Thread.sleep(1000);
 
                 //rampPos();
 
