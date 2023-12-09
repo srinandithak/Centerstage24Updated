@@ -172,16 +172,16 @@ public class RedAutonRight extends LinearOpMode {
 //                .build();
 
         Trajectory backBoard0 = drive.trajectoryBuilder(move0.end().plus(new Pose2d(0, 0, Math.toRadians(180))))
-                .lineToConstantHeading(new Vector2d(24,-33.5))
+                .lineToConstantHeading(new Vector2d(21,-33.5))
                 .build();
 
 
         Trajectory park0 =  drive.trajectoryBuilder(backBoard0.end())
-                .lineToConstantHeading(new Vector2d(-3, -20))
+                .lineToConstantHeading(new Vector2d(-4, -20))
                 .build();
 
         Trajectory park0_2 = drive.trajectoryBuilder(park0.end())
-                .lineToConstantHeading(new Vector2d(-3, -40))
+                .lineToConstantHeading(new Vector2d(-4, -40))
                 .build();
 
 //        Trajectory park0_3 = drive.trajectoryBuilder(park0_2.end())
@@ -190,7 +190,7 @@ public class RedAutonRight extends LinearOpMode {
 
         //Position 1
         Trajectory forward1 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(42, 0))
+                .lineToConstantHeading(new Vector2d(40, 0))
                 .build();
 
 //        Trajectory forward1_2 = drive.trajectoryBuilder(forward1.end())
@@ -222,24 +222,24 @@ public class RedAutonRight extends LinearOpMode {
         //position 0
 
         Trajectory forward2 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(27,0 ))
+                .lineToConstantHeading(new Vector2d(25,0 ))
                 .build();
 
         Trajectory dropPos2 = drive.trajectoryBuilder((forward2.end()))
-                .lineToLinearHeading(new Pose2d(27, 1, Math.toRadians(90)), SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(25, 1, Math.toRadians(90)), SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
         Trajectory dropPos2_2 = drive.trajectoryBuilder((dropPos2.end()))
-                .lineToConstantHeading(new Vector2d(27, 18))
+                .lineToConstantHeading(new Vector2d(25, 18))
                 .build();
 
         Trajectory dropPos2_3 = drive.trajectoryBuilder((dropPos2_2.end()))
-                .lineToConstantHeading(new Vector2d(29, -8))
+                .lineToConstantHeading(new Vector2d(27, -8))
                 .build();
 
         Trajectory dropPos2_4 = drive.trajectoryBuilder((dropPos2_3.end()))
-                .lineToLinearHeading(new Pose2d(27, -1, Math.toRadians(-94)))
+                .lineToLinearHeading(new Pose2d(25, -1, Math.toRadians(-94)))
                 .build();
 
         Trajectory backBoard2 = drive.trajectoryBuilder(dropPos2_4.end())

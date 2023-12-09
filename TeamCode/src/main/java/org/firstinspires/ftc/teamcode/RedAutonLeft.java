@@ -149,7 +149,7 @@ public class RedAutonLeft extends LinearOpMode {
 
         //Position 1
         Trajectory forward1 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(50,0 ))
+                .lineToConstantHeading(new Vector2d(44,0 ))
                 .build();
 
         Trajectory back1 = drive.trajectoryBuilder(forward1.end())
@@ -161,34 +161,34 @@ public class RedAutonLeft extends LinearOpMode {
 
         //Position 2
         Trajectory forward2 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(37,0 ))
+                .lineToConstantHeading(new Vector2d(13,0 ))
                 .build();
 
         Trajectory dropPos2 = drive.trajectoryBuilder((forward2.end()))
-                .lineToLinearHeading(new Pose2d(35, -1, Math.toRadians(-91)))
+                .lineToLinearHeading(new Pose2d(13, -1, Math.toRadians(-91)))
                 .build();
 
         Trajectory dropPos2_2 = drive.trajectoryBuilder(dropPos2.end())
-                .lineToConstantHeading(new Vector2d(35, -17 ))
+                .lineToConstantHeading(new Vector2d(13, -17 ))
                 .build();
 
         Trajectory back2 = drive.trajectoryBuilder(dropPos2_2.end())
-                .lineToConstantHeading(new Vector2d(35, 0 ))
+                .lineToConstantHeading(new Vector2d(13, 0 ))
                 .build();
 
 
         //position0
 
         Trajectory forward0 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(31,0 ))
+                .lineToConstantHeading(new Vector2d(29,0 ))
                 .build();
 
         Trajectory dropPos0  = drive.trajectoryBuilder(forward0.end())
-                .lineToLinearHeading(new Pose2d(31, -1, Math.toRadians(91)))
+                .lineToLinearHeading(new Pose2d(29, -1, Math.toRadians(91)))
                 .build();
 
         Trajectory dropPos0_2 = drive.trajectoryBuilder(dropPos0.end())
-                .lineToConstantHeading(new Vector2d(32,18 ))
+                .lineToConstantHeading(new Vector2d(32,12))
                 .build();
 
         Trajectory back0 = drive.trajectoryBuilder(dropPos0_2.end())

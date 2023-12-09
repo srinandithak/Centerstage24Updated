@@ -161,19 +161,19 @@ public class BlueAutonRight extends LinearOpMode {
 
         //Position 0
         Trajectory forward0 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(37,0 ))
+                .lineToConstantHeading(new Vector2d(27,0 ))
                 .build();
 
         Trajectory dropPos0 = drive.trajectoryBuilder((forward0.end()))
-                .lineToLinearHeading(new Pose2d(37, 1, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(27, 1, Math.toRadians(90)))
                 .build();
 
         Trajectory dropPos0_2 = drive.trajectoryBuilder(dropPos0.end())
-                .lineToConstantHeading(new Vector2d(37, 15 ))
+                .lineToConstantHeading(new Vector2d(27, 15 ))
                 .build();
 
         Trajectory back0 = drive.trajectoryBuilder(dropPos0_2.end())
-                .lineToConstantHeading(new Vector2d(37, 0 ))
+                .lineToConstantHeading(new Vector2d(27, 0 ))
                 .build();
 
 
