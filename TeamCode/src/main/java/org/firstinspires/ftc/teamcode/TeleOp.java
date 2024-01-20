@@ -186,13 +186,13 @@ public class TeleOp extends LinearOpMode {
             }
 
             //rampServo
-            if (liftMotor.getCurrentPosition() >= 2300) {
+            if (liftMotor.getCurrentPosition() >= 2550) {
                 //test position
                 rightRampServo.setPosition(.76);
            //     leftRampServo.setPosition(leftRampServo.getPosition() + 0.5);
             }
 
-            if (liftMotor.getCurrentPosition() < 2300) {
+            if (liftMotor.getCurrentPosition() < 2550) {
 
                 rightRampServo.setPosition(0);
           //      leftRampServo.setPosition(0);
@@ -288,16 +288,16 @@ public class TeleOp extends LinearOpMode {
                 rightSuspensionServo.setPower(.5);
             }
             else {
-                leftSuspensionServo.setPower(.05);
-                rightSuspensionServo.setPower(-.05);
+                leftSuspensionServo.setPower(0);
+                rightSuspensionServo.setPower(0);
             }
 
             if (gamepad2.dpad_right) {
-                rightSuspension.setPower(0.8);
-                leftSuspension.setPower(0.8);
+                rightSuspension.setPower(0.95);
+                leftSuspension.setPower(0.95);
             } else if (gamepad2.dpad_left){
-                rightSuspension.setPower(-0.8);
-                leftSuspension.setPower(-0.8);
+                rightSuspension.setPower(-0.95);
+                leftSuspension.setPower(-0.95);
             }
             else {
                 rightSuspension.setPower(0);

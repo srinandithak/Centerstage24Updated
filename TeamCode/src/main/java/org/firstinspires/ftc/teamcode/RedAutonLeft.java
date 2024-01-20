@@ -42,7 +42,7 @@ import java.util.List;
 @Autonomous(name = "RedAutonleft", group = "Autonomous")
 public class RedAutonLeft extends LinearOpMode {
 
-    detectionPipelineRed pipeline;
+    detectionPipelineRedLeft pipeline;
 
     public DcMotorEx liftMotor;
     public DcMotorEx intakeMotor;
@@ -111,7 +111,7 @@ public class RedAutonLeft extends LinearOpMode {
         WebcamName OpenCvCamera = hardwareMap.get(WebcamName.class, "frontCamera");
         OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(OpenCvCamera, cameraMonitorViewId);
 
-        pipeline = new detectionPipelineRed();
+        pipeline = new detectionPipelineRedLeft();
 
         outtake = hardwareMap.crservo.get("outtake");
         intakeServo = hardwareMap.crservo.get("intakeServo");
@@ -161,19 +161,19 @@ public class RedAutonLeft extends LinearOpMode {
 
         //Position 2
         Trajectory forward2 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(13,0 ))
+                .lineToConstantHeading(new Vector2d(26,0 ))
                 .build();
 
         Trajectory dropPos2 = drive.trajectoryBuilder((forward2.end()))
-                .lineToLinearHeading(new Pose2d(13, -1, Math.toRadians(-91)))
+                .lineToLinearHeading(new Pose2d(26, -1, Math.toRadians(-92.5)))
                 .build();
 
         Trajectory dropPos2_2 = drive.trajectoryBuilder(dropPos2.end())
-                .lineToConstantHeading(new Vector2d(13, -17 ))
+                .lineToConstantHeading(new Vector2d(20, -17 ))
                 .build();
 
         Trajectory back2 = drive.trajectoryBuilder(dropPos2_2.end())
-                .lineToConstantHeading(new Vector2d(13, 0 ))
+                .lineToConstantHeading(new Vector2d(26, 0 ))
                 .build();
 
 
@@ -188,7 +188,7 @@ public class RedAutonLeft extends LinearOpMode {
                 .build();
 
         Trajectory dropPos0_2 = drive.trajectoryBuilder(dropPos0.end())
-                .lineToConstantHeading(new Vector2d(32,12))
+                .lineToConstantHeading(new Vector2d(32,13.5))
                 .build();
 
         Trajectory back0 = drive.trajectoryBuilder(dropPos0_2.end())
@@ -228,7 +228,7 @@ public class RedAutonLeft extends LinearOpMode {
                 drive.followTrajectory(forward0);
                 drive.followTrajectory(dropPos0);
                 drive.followTrajectory(dropPos0_2);
-                changeLift(500);
+                changeLift(750);
                 outtakeGround();
                 drive.followTrajectory(back0);
                 changeLift(0);
@@ -243,10 +243,10 @@ public class RedAutonLeft extends LinearOpMode {
                 drive.followTrajectory(forward2);
                 drive.followTrajectory(dropPos2);
                 drive.followTrajectory(dropPos2_2);
-                changeLift(600);
+                changeLift(750);
                 outtakeGround();
-                drive.followTrajectory(back2);
-                changeLift(0);
+                //drive.followTrajectory(back2);
+                //changeLift(0);
                 Thread.sleep(1000);
 
 

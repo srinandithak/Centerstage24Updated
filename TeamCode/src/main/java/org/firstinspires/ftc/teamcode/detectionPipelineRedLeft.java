@@ -8,7 +8,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class detectionPipelineRed extends OpenCvPipeline {
+public class detectionPipelineRedLeft extends OpenCvPipeline {
 
     int Position;
     int maxValue;
@@ -16,8 +16,8 @@ public class detectionPipelineRed extends OpenCvPipeline {
     static final Scalar BLUE = new Scalar(0, 0, 255);
     static final Scalar GREEN = new Scalar(0, 255, 0);
 
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(285, 128);
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(85, 128);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(20, 128);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(205, 128);
 //    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(253, 98);
     static final int REGION_WIDTH = 20;
     static final int REGION_HEIGHT = 20;
@@ -128,11 +128,11 @@ public class detectionPipelineRed extends OpenCvPipeline {
 
         //if its a small value, we assume its from region 0
         if (max < 141 ) {
-            Position = 0;
+            Position = 2;
         }
         else if (max == avg1) // Was it from region 1?
         {
-            Position = 2;  // Record our analysis
+            Position = 0;  // Record our analysis
             //draws rectangle on that region
             Imgproc.rectangle(
                     input, // Buffer to draw on
