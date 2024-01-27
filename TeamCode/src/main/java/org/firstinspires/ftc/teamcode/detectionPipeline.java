@@ -24,8 +24,8 @@ public class detectionPipeline extends OpenCvPipeline {
     static final Scalar BLUE = new Scalar(0, 0, 255);
     static final Scalar GREEN = new Scalar(0, 255, 0);
 
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(10, 128);
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(250, 128);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(50, 128);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(290, 115);
 //    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(253, 98);
     static final int REGION_WIDTH = 20;
     static final int REGION_HEIGHT = 20;
@@ -136,11 +136,11 @@ public class detectionPipeline extends OpenCvPipeline {
 
         //if its a small value, we assume its from region 3
         if (max < 140) {
-            Position = 2;
+            Position = 0;
         }
         else if (max == avg1) // Was it from region 1?
         {
-            Position = 0;  // Record our analysis
+            Position = 1;  // Record our analysis
             //draws rectangle on that region
             Imgproc.rectangle(
                     input, // Buffer to draw on
@@ -150,7 +150,7 @@ public class detectionPipeline extends OpenCvPipeline {
                     -1); // Negative thickness means solid fill
         } else if (max == avg2) //region 2?
         {
-            Position = 1;
+            Position = 2;
             Imgproc.rectangle(
                     input, // Buffer to draw on
                     region2_pointA, // First point which defines the rectangle

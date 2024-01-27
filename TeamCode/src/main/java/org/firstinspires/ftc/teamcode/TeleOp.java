@@ -71,7 +71,6 @@ public class TeleOp extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Most robots need the motor on one side to be reversed to drive forward - was done in Sample Mecanum Drive
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -188,13 +187,13 @@ public class TeleOp extends LinearOpMode {
             //rampServo
             if (liftMotor.getCurrentPosition() >= 2550) {
                 //test position
-                rightRampServo.setPosition(.76);
+                leftRampServo.setPosition(.55);
            //     leftRampServo.setPosition(leftRampServo.getPosition() + 0.5);
             }
 
             if (liftMotor.getCurrentPosition() < 2550) {
 
-                rightRampServo.setPosition(0);
+                leftRampServo.setPosition(.24);
           //      leftRampServo.setPosition(0);
             }
 
