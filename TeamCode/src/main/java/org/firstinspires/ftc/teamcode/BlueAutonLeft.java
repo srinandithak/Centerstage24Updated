@@ -155,12 +155,12 @@ public class BlueAutonLeft extends LinearOpMode {
     }
 
     public void outtakePos() throws InterruptedException {
-        leftRampServo.setPosition(0.8);
+        leftRampServo.setPosition(0.85);
     }
 
     public void intakePos() throws InterruptedException {
 
-        leftRampServo.setPosition(0.27);
+        leftRampServo.setPosition(0.34);
 
     }
 
@@ -256,15 +256,15 @@ public class BlueAutonLeft extends LinearOpMode {
 
         //GO TO PIXELS
         Trajectory shift = drive.trajectoryBuilder(reset_0.end())
-                .lineToConstantHeading(new Vector2d(-50, -10))
+                .lineToConstantHeading(new Vector2d(-50, -35))
                 .build();
 
         Trajectory pixels =  drive.trajectoryBuilder(shift.end())
-                .lineToConstantHeading(new Vector2d(-50, -72))
+                .lineToConstantHeading(new Vector2d(-50, 72))
                 .build();
 
         Trajectory back = drive.trajectoryBuilder(pixels.end())
-                .lineToConstantHeading(new Vector2d(-50, -10))
+                .lineToConstantHeading(new Vector2d(-50, -35))
                 .build();
 
         Trajectory backBoard = drive.trajectoryBuilder(back.end())

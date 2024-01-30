@@ -187,13 +187,13 @@ public class TeleOp extends LinearOpMode {
             //rampServo
             if (liftMotor.getCurrentPosition() >= 2550) {
                 //test position
-                leftRampServo.setPosition(.55);
+                leftRampServo.setPosition(.85);
            //     leftRampServo.setPosition(leftRampServo.getPosition() + 0.5);
             }
 
             if (liftMotor.getCurrentPosition() < 2550) {
 
-                leftRampServo.setPosition(.24);
+                leftRampServo.setPosition(.34);
           //      leftRampServo.setPosition(0);
             }
 
