@@ -30,8 +30,12 @@ public class TeleOp extends LinearOpMode {
     public CRServo outtake;
     public CRServo droneLauncher;
 
-    public CRServo rightSuspensionServo;
-    public CRServo leftSuspensionServo;
+    public Servo rightSuspensionServo;
+    public Servo leftSuspensionServo;
+
+    public Servo stackServo;
+
+
 
     public Servo rightRampServo;
     public Servo leftRampServo;
@@ -79,12 +83,13 @@ public class TeleOp extends LinearOpMode {
         rightSuspension = hardwareMap.get(DcMotorEx.class, "rightSuspension");
         leftSuspension = hardwareMap.get(DcMotorEx.class, "leftSuspension");
         intakeServo = hardwareMap.crservo.get("intakeServo");
-        leftSuspensionServo = hardwareMap.crservo.get("leftSuspensionServo");
-        rightSuspensionServo = hardwareMap.crservo.get("rightSuspensionServo");
+        leftSuspensionServo = hardwareMap.get(Servo.class, "leftSuspensionServo");
+        rightSuspensionServo = hardwareMap.get(Servo.class, "rightSuspensionServo");
         outtake = hardwareMap.crservo.get("outtake");
         droneLauncher = hardwareMap.crservo.get("droneLauncher");
         rightRampServo = hardwareMap.get(Servo.class, "rightRampServo");
         leftRampServo = hardwareMap.get(Servo.class, "leftRampServo");
+        stackServo = hardwareMap.get(Servo.class, "stackServo");
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
@@ -100,6 +105,8 @@ public class TeleOp extends LinearOpMode {
 
 
         while (opModeIsActive()) {
+
+
 
 
 //            double d1 = distanceSensorLeft.getDistance(DistanceUnit.MM);
@@ -179,33 +186,45 @@ public class TeleOp extends LinearOpMode {
             //droneLauncher
             if (gamepad1.x || gamepad2.x) {
                 //test position
-                droneLauncher.setPower(1);
+                //droneLauncher.setPower(1);
+                stackServo.setPosition(.1);
             } else {
-                droneLauncher.setPower(0);
+                //droneLauncher.setPower(0);
             }
 
             //rampServo
-            if (liftMotor.getCurrentPosition() >= 2550) {
+            if (liftMotor.getCurrentPosition() >= 2000) {
                 //test position
-                leftRampServo.setPosition(.85);
+                leftRampServo.setPosition(.66);
+                //robotSpeed = TURTLE_SPEED;
            //     leftRampServo.setPosition(leftRampServo.getPosition() + 0.5);
             }
 
-            if (liftMotor.getCurrentPosition() < 2550) {
+            if (liftMotor.getCurrentPosition() < 2000 && liftMotor.getCurrentPosition() > 30) {
 
-                leftRampServo.setPosition(.34);
+                leftRampServo.setPosition(.15);
+                //robotSpeed = NORMAL_SPEED;
           //      leftRampServo.setPosition(0);
             }
 
             //intake
             if (gamepad1.right_bumper || gamepad2.right_bumper) {
+                //robotSpeed = TURTLE_SPEED;
                 intakeMotor.setPower(1);
             } else if (gamepad1.left_bumper || gamepad2.left_bumper) {
+                //robotSpeed = TURTLE_SPEED;
                 intakeMotor.setPower(-1);
-            } else {
+                leftRampServo.setPosition(.15);
+            }
+            else if (liftMotor.getCurrentPosition() < 30) {
+                //robotSpeed = NORMAL_SPEED;
+                leftRampServo.setPosition(.17);
                 intakeMotor.setPower(0);
             }
-
+            else {
+                //robotSpeed = NORMAL_SPEED;
+                intakeMotor.setPower(0);
+            }
             //middle servo
 
             if (gamepad1.right_bumper || gamepad2.right_bumper || gamepad1.a || gamepad2.a) {
@@ -280,16 +299,18 @@ public class TeleOp extends LinearOpMode {
 //            }
 
             if (gamepad2.dpad_down) {
-                leftSuspensionServo.setPower(.1);
-                rightSuspensionServo.setPower(-.5);
+                leftSuspensionServo.setPosition(.45);
+                rightSuspensionServo.setPosition(.45);
             } else if (gamepad2.dpad_up){
-                leftSuspensionServo.setPower(-.1);
-                rightSuspensionServo.setPower(.5);
+                leftSuspensionServo.setPosition(.825);
+                rightSuspensionServo.setPosition(.115);
             }
-            else {
-                leftSuspensionServo.setPower(0);
-                rightSuspensionServo.setPower(0);
-            }
+
+
+//            else {
+//                leftSuspensionServo.setPower(0);
+//                rightSuspensionServo.setPower(0);
+//            }
 
             if (gamepad2.dpad_right) {
                 rightSuspension.setPower(0.95);
