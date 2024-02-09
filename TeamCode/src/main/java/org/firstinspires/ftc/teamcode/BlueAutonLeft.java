@@ -156,12 +156,12 @@ public class BlueAutonLeft extends LinearOpMode {
     }
 
     public void outtakePos() throws InterruptedException {
-        leftRampServo.setPosition(0.58);
+        leftRampServo.setPosition(0.73);
     }
 
     public void intakePos() throws InterruptedException {
 
-        leftRampServo.setPosition(0.07);
+        leftRampServo.setPosition(0.20);
 
     }
 
@@ -263,10 +263,10 @@ public class BlueAutonLeft extends LinearOpMode {
         //POSITION 1
 
         Trajectory dropPos_1 = drive.trajectoryBuilder(strafe.end())
-                .lineToConstantHeading(new Vector2d(-25,-4))
+                .lineToConstantHeading(new Vector2d(-27,-4))
                 .build();
         Trajectory backBoard_1 = drive.trajectoryBuilder(dropPos_1.end())
-                .lineToLinearHeading(new Pose2d(-22,-42, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-24,-42, Math.toRadians(-90)))
                 .build();
         Trajectory reset_1 = drive.trajectoryBuilder(backBoard_1.end())
                 .lineToLinearHeading(new Pose2d(-24,-35, Math.toRadians(-90)))
@@ -279,7 +279,7 @@ public class BlueAutonLeft extends LinearOpMode {
                 .build();
 
         Trajectory backBoard_2 = drive.trajectoryBuilder(dropPos_2.end())
-                .lineToConstantHeading(new Vector2d(-31, -42))
+                .lineToConstantHeading(new Vector2d(-31, -43))
                 .build();
         Trajectory reset_2 = drive.trajectoryBuilder(backBoard_2.end())
                 .lineToLinearHeading(new Pose2d(-24,-35, Math.toRadians(-90)))
@@ -302,7 +302,7 @@ public class BlueAutonLeft extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-22,-41.5, Math.toRadians(-90)))
                 .build();
 
-        Trajectory park =  drive.trajectoryBuilder(backBoard.end())
+        Trajectory park =  drive.trajectoryBuilder(reset_0.end())
                 .lineToConstantHeading(new Vector2d(3, -20))
                 .build();
 
@@ -328,7 +328,8 @@ public class BlueAutonLeft extends LinearOpMode {
         if (opModeIsActive()) {
             //Position 0
 
-            intakePos();
+//            intakePos();
+            leftRampServo.setPosition(.25);
             changeLift(80);
             drive.followTrajectory(strafe);
 
@@ -366,17 +367,17 @@ public class BlueAutonLeft extends LinearOpMode {
 
             intakePos();
             changeLift(0);
-            leftRampServo.setPosition(.13);
+            leftRampServo.setPosition(.25);
             drive.followTrajectory(shift);
-            stackServo.setPosition(.2);
+//            stackServo.setPosition(.2);
             drive.followTrajectory(pixels);
             intakePos();
-            stackServo(0, pixels.end());
-//            intakeMotor.setPower(-1);
-//            intakeServo.setPower(1);
-//            Thread.sleep(3000);
-//            intakeMotor.setPower(-1);
-//            intakeServo.setPower(1);
+//            stackServo(0, pixels.end());
+            intakeMotor.setPower(-1);
+            intakeServo.setPower(1);
+            Thread.sleep(3000);
+            intakeMotor.setPower(0);
+            intakeServo.setPower(0);
             drive.followTrajectory(back);
             drive.followTrajectory(backBoard);
             changeLift(1900);

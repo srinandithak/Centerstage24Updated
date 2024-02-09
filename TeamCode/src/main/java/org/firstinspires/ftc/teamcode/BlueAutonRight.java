@@ -155,12 +155,12 @@ public class BlueAutonRight extends LinearOpMode {
     }
 
     public void outtakePos() throws InterruptedException {
-        leftRampServo.setPosition(0.85);
+        leftRampServo.setPosition(.76);
     }
 
     public void intakePos() throws InterruptedException {
 
-        leftRampServo.setPosition(0.34);
+        leftRampServo.setPosition(.23);
 
     }
 
