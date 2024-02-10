@@ -28,9 +28,9 @@ public class TeleOp extends LinearOpMode {
 
     public CRServo intakeServo;
     public CRServo outtake;
-    public CRServo droneLauncher;
+    public Servo droneLauncher;
 
-    public CRServo tiltServo;
+    public Servo tiltServo;
     public Servo rightSuspensionServo;
     public Servo leftSuspensionServo;
 
@@ -87,8 +87,8 @@ public class TeleOp extends LinearOpMode {
         leftSuspensionServo = hardwareMap.get(Servo.class, "leftSuspensionServo");
         rightSuspensionServo = hardwareMap.get(Servo.class, "rightSuspensionServo");
         outtake = hardwareMap.crservo.get("outtake");
-        droneLauncher = hardwareMap.crservo.get("droneLauncher");
-        tiltServo = hardwareMap.crservo.get("tiltServo");
+//        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
+        tiltServo = hardwareMap.get(Servo.class, "tiltServo");
         rightRampServo = hardwareMap.get(Servo.class, "rightRampServo");
         leftRampServo = hardwareMap.get(Servo.class, "leftRampServo");
         stackServo = hardwareMap.get(Servo.class, "stackServo");
@@ -187,41 +187,39 @@ public class TeleOp extends LinearOpMode {
 
             //droneLauncher
             if (gamepad1.x || gamepad2.x) {
-                tiltServo.setPower(-1);
+                tiltServo.setPosition(1);
                 Thread.sleep(500);
-                tiltServo.setPower(0);
-                droneLauncher.setPower(1);
+//                droneLauncher.setPosition(0.5);
                 Thread.sleep(2000);
-                droneLauncher.setPower(0);
-            } else {
-                droneLauncher.setPower(0);
-                tiltServo.setPower(0);
+
+//                droneLauncher.setPosition(0);
+                tiltServo.setPosition(0);
             }
 
 
             //rampServo
             if (liftMotor.getCurrentPosition() >= 2000) {
                 //test position
-                leftRampServo.setPosition(.73);
-                //robotSpeed = TURTLE_SPEED;
-           //     leftRampServo.setPosition(leftRampServo.getPosition() + 0.5);
+                leftRampServo.setPosition(.69); //Outtake position
+                robotSpeed = TURTLE_SPEED;
+
             }
 
             if (liftMotor.getCurrentPosition() < 2000 && liftMotor.getCurrentPosition() > 30) {
 
-                leftRampServo.setPosition(.21);
-                //robotSpeed = NORMAL_SPEED;
-          //      leftRampServo.setPosition(0);
+                leftRampServo.setPosition(.23); //Tilt position to avoid scraping
+                robotSpeed = NORMAL_SPEED;
+
             }
 
             //intake
-            if (gamepad1.right_bumper || gamepad2.right_bumper) {
+            if (gamepad1.right_bumper || gamepad2.right_bumper) { //reverse intake
                 //robotSpeed = TURTLE_SPEED;
                 intakeMotor.setPower(1);
-            } else if (gamepad1.left_bumper || gamepad2.left_bumper) {
-                //robotSpeed = TURTLE_SPEED;
+            } else if (gamepad1.left_bumper || gamepad2.left_bumper) { //intake
+                //robotSpeed = TURTLE_SPEED;u
                 intakeMotor.setPower(-1);
-                leftRampServo.setPosition(.22);
+                leftRampServo.setPosition(.22); //Intake position
             }
             else if (liftMotor.getCurrentPosition() < 30) {
                 //robotSpeed = NORMAL_SPEED;
@@ -310,7 +308,7 @@ public class TeleOp extends LinearOpMode {
                 rightSuspensionServo.setPosition(.45);
             } else if (gamepad2.dpad_up){
                 leftSuspensionServo.setPosition(.825);
-                rightSuspensionServo.setPosition(.115);
+                rightSuspensionServo.setPosition(.15);
             }
 
 
