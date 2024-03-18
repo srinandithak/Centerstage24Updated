@@ -25,7 +25,7 @@ public class detectionPipeline extends OpenCvPipeline {
     static final Scalar GREEN = new Scalar(0, 255, 0);
 
     static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(50, 128);
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(290, 115);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(290, 135);
 //    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(253, 98);
     static final int REGION_WIDTH = 20;
     static final int REGION_HEIGHT = 20;

@@ -28,15 +28,14 @@ public class TeleOp extends LinearOpMode {
 
     public CRServo intakeServo;
     public CRServo outtake;
+
+    public Servo stackServo;
+
     public Servo droneLauncher;
 
     public Servo tiltServo;
     public Servo rightSuspensionServo;
     public Servo leftSuspensionServo;
-
-    public Servo stackServo;
-
-
 
     public Servo rightRampServo;
     public Servo leftRampServo;
@@ -54,7 +53,7 @@ public class TeleOp extends LinearOpMode {
 
     //Other variables
     public static final double NORMAL_SPEED = 1;
-    public static final double TURTLE_SPEED = 0.25;
+    public static final double TURTLE_SPEED = 0.4;
     public double robotSpeed = NORMAL_SPEED;
     public double rotationSpeed = 1;
     public boolean fieldOriented = false;
@@ -86,16 +85,18 @@ public class TeleOp extends LinearOpMode {
         intakeServo = hardwareMap.crservo.get("intakeServo");
         leftSuspensionServo = hardwareMap.get(Servo.class, "leftSuspensionServo");
         rightSuspensionServo = hardwareMap.get(Servo.class, "rightSuspensionServo");
+        stackServo = hardwareMap.get(Servo.class, "stackServo");
         outtake = hardwareMap.crservo.get("outtake");
-//        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
+        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
         tiltServo = hardwareMap.get(Servo.class, "tiltServo");
         rightRampServo = hardwareMap.get(Servo.class, "rightRampServo");
         leftRampServo = hardwareMap.get(Servo.class, "leftRampServo");
-        stackServo = hardwareMap.get(Servo.class, "stackServo");
         liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         distanceSensorLeft = hardwareMap.get(DistanceSensor.class, "distanceSensorLeft");
+
+
         distanceSensorRight = hardwareMap.get(DistanceSensor.class, "distanceSensorRight");
         initialPositionLeft = leftRampServo.getPosition();
         initialPositionRight = rightRampServo.getPosition();
@@ -104,7 +105,7 @@ public class TeleOp extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-
+        // Vrishank (the goat) was here
 
         while (opModeIsActive()) {
 
@@ -129,46 +130,46 @@ public class TeleOp extends LinearOpMode {
 
 
             //distance sensor
-            if (gamepad1.dpad_left) {
-
-                if (distanceSensorLeft.getDistance(DistanceUnit.INCH) >= distanceSensorRight.getDistance(DistanceUnit.INCH)) {
-                    while(distanceSensorLeft.getDistance(DistanceUnit.INCH) >= distanceSensorRight.getDistance(DistanceUnit.INCH)) {
-                        if (gamepad1.dpad_right) break;
-                        drive.setWeightedDrivePower(
-                                new Pose2d(
-                                        0,
-                                        0,
-                                        -0.2
-                                )
-                        );
-                    }
-                }
-
-                else {
-                    while(distanceSensorRight.getDistance(DistanceUnit.INCH) >= distanceSensorLeft.getDistance(DistanceUnit.INCH)) {
-                        if (gamepad1.dpad_right) break;
-                        drive.setWeightedDrivePower(
-                                new Pose2d(
-                                        0,
-                                        0,
-                                        0.2
-                                )
-                        );
-                    }
-                }
-
-                if (distanceSensorLeft.getDistance(DistanceUnit.INCH) > 8.5) {
-                    while (distanceSensorLeft.getDistance(DistanceUnit.INCH) >= 8.5) {
-                        drive.setWeightedDrivePower(
-                                new Pose2d(
-                                        0.2,
-                                        0,
-                                        0
-                                )
-                        );
-                    }
-                }
-            }
+//            if (gamepad1.dpad_left) {
+//
+//                if (distanceSensorLeft.getDistance(DistanceUnit.INCH) >= distanceSensorRight.getDistance(DistanceUnit.INCH)) {
+//                    while(distanceSensorLeft.getDistance(DistanceUnit.INCH) >= distanceSensorRight.getDistance(DistanceUnit.INCH)) {
+//                        if (gamepad1.dpad_right) break;
+//                        drive.setWeightedDrivePower(
+//                                new Pose2d(
+//                                        0,
+//                                        0,
+//                                        -0.2
+//                                )
+//                        );
+//                    }
+//                }
+//
+//                else {
+//                    while(distanceSensorRight.getDistance(DistanceUnit.INCH) >= distanceSensorLeft.getDistance(DistanceUnit.INCH)) {
+//                        if (gamepad1.dpad_right) break;
+//                        drive.setWeightedDrivePower(
+//                                new Pose2d(
+//                                        0,
+//                                        0,
+//                                        0.2
+//                                )
+//                        );
+//                    }
+//                }
+//
+//                if (distanceSensorLeft.getDistance(DistanceUnit.INCH) > 8.5) {
+//                    while (distanceSensorLeft.getDistance(DistanceUnit.INCH) >= 8.5) {
+//                        drive.setWeightedDrivePower(
+//                                new Pose2d(
+//                                        0.2,
+//                                        0,
+//                                        0
+//                                )
+//                        );
+//                    }
+//                }
+//            }
 
 
 
@@ -187,27 +188,40 @@ public class TeleOp extends LinearOpMode {
 
             //droneLauncher
             if (gamepad1.x || gamepad2.x) {
-                tiltServo.setPosition(1);
-                Thread.sleep(500);
+                tiltServo.setPosition(0.25);
+                droneLauncher.setPosition(0);
+                Thread.sleep(1500);
+                tiltServo.setPosition(0);
+
 //                droneLauncher.setPosition(0.5);
-                Thread.sleep(2000);
 
 //                droneLauncher.setPosition(0);
-                tiltServo.setPosition(0);
             }
 
+            //stackServo
+            if (gamepad1.dpad_up){
+                stackServo.setPosition(1);
+            } else if (gamepad1.dpad_down){
+                stackServo.setPosition(.2);
+
+            }
+
+            if (gamepad1.dpad_right) {
+                liftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                liftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            }
 
             //rampServo
-            if (liftMotor.getCurrentPosition() >= 2000) {
+            if (liftMotor.getCurrentPosition() >= 1500) {
                 //test position
-                leftRampServo.setPosition(.69); //Outtake position
+                leftRampServo.setPosition(.75); //Outtake position
                 robotSpeed = TURTLE_SPEED;
 
             }
 
-            if (liftMotor.getCurrentPosition() < 2000 && liftMotor.getCurrentPosition() > 30) {
+            if (liftMotor.getCurrentPosition() < 1500) {
 
-                leftRampServo.setPosition(.23); //Tilt position to avoid scraping
+                leftRampServo.setPosition(.29); //Tilt position to avoid scraping
                 robotSpeed = NORMAL_SPEED;
 
             }
@@ -217,14 +231,9 @@ public class TeleOp extends LinearOpMode {
                 //robotSpeed = TURTLE_SPEED;
                 intakeMotor.setPower(1);
             } else if (gamepad1.left_bumper || gamepad2.left_bumper) { //intake
-                //robotSpeed = TURTLE_SPEED;u
+                //robotSpeed = TURTLE_SPEED;
                 intakeMotor.setPower(-1);
-                leftRampServo.setPosition(.22); //Intake position
-            }
-            else if (liftMotor.getCurrentPosition() < 30) {
-                //robotSpeed = NORMAL_SPEED;
-                leftRampServo.setPosition(.25);
-                intakeMotor.setPower(0);
+                leftRampServo.setPosition(.25); //Intake position
             }
             else {
                 //robotSpeed = NORMAL_SPEED;
@@ -375,12 +384,31 @@ public class TeleOp extends LinearOpMode {
             drive.update();
 
             // Show the elapsed game time and wheel power.
+//            telemetry.addData("tilt servo position", tiltServo.getPosition());
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("DRIVE", "------------------------------------");
             telemetry.addData("DriveMode: ", (turtleMode) ? ("turtleMode") : ("Normal"));
             telemetry.addData("OTHER", "------------------------------------");
             telemetry.addData("LiftMotor Position: ", liftMotor.getCurrentPosition());
             telemetry.addData("DriveType: ", (fieldOriented) ? ("Field-Oriented Drive") : ("Robot-Oriented"));
+// ANKARA MESSI
+            // ANKARA MESSI
+            // ANKARA MESSI
+            // ANKARA MESSI
+            // ANKARA MESSI
+            // ANKARA MESSI
+            // ANKARA MESSI
+            // ANKARA MESSI
+            // ANKARA MESSI
+            //GOL
+            //GOL//GOL//GOL//GOL//GOL//GOL//GOL//GOL//GOL
+
+
+
+
+
+
+
 
         }
     }
